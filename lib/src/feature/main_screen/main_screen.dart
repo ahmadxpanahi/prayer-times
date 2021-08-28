@@ -46,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
       preferredSize: Size.fromHeight(100),
       child: Container(
         padding: EdgeInsets.only(
-            top: SizeConfig.heightMultiplier! >= 7 ? 3.5.rh : 2.2.rh),
+            top: SizeConfig.heightMultiplier! >= 7 ? 5.5.rh : 4.2.rh),
         alignment: Alignment.center,
         color: PColors.primary,
         height: 13.3.rh,
@@ -61,7 +61,7 @@ class _MainScreenState extends State<MainScreen> {
       preferredSize: Size.fromHeight(100),
       child: Container(
         padding: EdgeInsets.only(
-            top: SizeConfig.heightMultiplier! >= 7 ? 3.5.rh : 2.2.rh),
+            top: SizeConfig.heightMultiplier! >= 7 ? 5.5.rh : 4.2.rh),
         alignment: Alignment.center,
         color: PColors.primary,
         height: 13.3.rh,
@@ -76,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
       preferredSize: Size.fromHeight(100),
       child: Container(
         padding: EdgeInsets.only(
-            top: SizeConfig.heightMultiplier! >= 7 ? 3.5.rh : 2.2.rh),
+            top: SizeConfig.heightMultiplier! >= 7 ? 5.5.rh : 4.2.rh),
         alignment: Alignment.center,
         color: PColors.primary,
         height: 13.3.rh,
