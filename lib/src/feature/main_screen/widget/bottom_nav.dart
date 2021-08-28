@@ -43,7 +43,7 @@ class _PBottomNavigationState extends State<PBottomNavigation> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 1.5.rh),
       height: 8.2.rh,
-      color: Color(0xfff5f5f5),
+      color: Colors.white,
       child: SafeArea(
         child: Align(
           alignment: Alignment.center,
@@ -65,7 +65,7 @@ class _PBottomNavigationState extends State<PBottomNavigation> {
               _bottomNavItem(() {
                 widget.change!('setting');
               }, widget.screenName ?? '', 'assets/images/setting.svg',
-                  'setting', SizeConfig.heightMultiplier! * 4),
+                  'setting', SizeConfig.heightMultiplier! * 4), 
             ],
           ),
         ),

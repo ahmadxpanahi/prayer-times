@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 
 class PColors{
 
-  static Color primary = Colors.blue;
+  static Color? primary = Colors.blue;
+  static Color? background = Colors.grey[100];
 
 }
