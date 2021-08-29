@@ -17,18 +17,19 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget _topContainer() => Expanded(
         flex: 11,
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
-            color: Colors.white,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _settingItem('Sabah Ezani', 'Her gun'),
-                  _settingItem('Ogle Ezani', 'Her gun'),
-                  _settingItem('Ikindi Ezani', 'Her gun'),
-                  _settingItem('Aksam Ezani', 'Her gun'),
-                  _settingItem('Yatsi Ezani', 'Her gun'),
-                ],
-              ),),
+          padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _settingItem('Sabah Ezani', 'Her gun'),
+              _settingItem('Ogle Ezani', 'Her gun'),
+              _settingItem('Ikindi Ezani', 'Her gun'),
+              _settingItem('Aksam Ezani', 'Her gun'),
+              _settingItem('Yatsi Ezani', 'Her gun'),
+            ],
+          ),
+        ),
       );
 
   Widget _bottomContainer() => Expanded(
@@ -67,12 +68,18 @@ class _SettingScreenState extends State<SettingScreen> {
                         Text(
                           'Lorem Ipsum',
                           style: TextStyle(
-                              fontSize: SizeConfig.heightMultiplier! < 6 ? 3.2.rw : 4.5.rw, fontWeight: FontWeight.bold),
+                              fontSize: SizeConfig.heightMultiplier! < 6
+                                  ? 3.2.rw
+                                  : 4.5.rw,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'Lorem Ipsum is simply dummy text',
-                          style:
-                              TextStyle(fontSize: SizeConfig.heightMultiplier! < 6 ? 3.0.rw : 4.2.rw, color: Colors.grey),
+                          'Lorem Ipsum is simply dummy',
+                          style: TextStyle(
+                              fontSize: SizeConfig.heightMultiplier! < 6
+                                  ? 3.0.rw
+                                  : 4.2.rw,
+                              color: Colors.grey),
                         ),
                       ],
                     ),
@@ -133,7 +140,9 @@ class _SettingScreenState extends State<SettingScreen> {
             padding: EdgeInsets.symmetric(vertical: 1.0.rh),
             child: Text(
               'Ezaniar',
-              style: TextStyle(fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw, color: Colors.grey),
+              style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
+                  color: Colors.grey),
             ),
           ),
           _topContainer(),
@@ -141,7 +150,9 @@ class _SettingScreenState extends State<SettingScreen> {
             padding: EdgeInsets.symmetric(vertical: 1.0.rh),
             child: Text(
               'Lorem Ipsum is simply dummy',
-              style: TextStyle(fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw, color: Colors.grey),
+              style: TextStyle(
+                  fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
+                  color: Colors.grey),
             ),
           ),
           _bottomContainer()
