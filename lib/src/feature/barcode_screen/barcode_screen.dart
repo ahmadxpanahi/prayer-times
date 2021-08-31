@@ -18,7 +18,7 @@ class _BarcodeScreenState extends State<BarcodeScreen> {
     
   }
 
-  String _scanBarcode = 'Unknown';  
+  String _scanBarcode = 'Unknown';
 
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
