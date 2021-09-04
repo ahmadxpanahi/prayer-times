@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
+import 'package:prayer_times_flutter/src/utils/size_config.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                   children: [
                     Text(
                       number,
-                      style: TextStyle(fontSize: 11.0.rw),
+                      style: TextStyle(fontSize: SizeConfig.heightMultiplier! < 6 ? 10.0.rw : 11.0.rw),
                     ),
                     Text(
                       index,
@@ -109,7 +110,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                       Text(
                         'Recep',
                         style: TextStyle(
-                            fontSize: 6.5.rw, fontWeight: FontWeight.bold),
+                            fontSize: SizeConfig.heightMultiplier! < 6 ? 5.8.rw : 6.5.rw , fontWeight: FontWeight.bold),
                       ),
                       Divider(),
                       _dateItem(
@@ -119,7 +120,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                       Text(
                         'Saban',
                         style: TextStyle(
-                            fontSize: 6.5.rw, fontWeight: FontWeight.bold),
+                            fontSize: SizeConfig.heightMultiplier! < 6 ? 5.8.rw : 6.5.rw, fontWeight: FontWeight.bold),
                       ),
                       Row(
                         children: [
@@ -139,7 +140,7 @@ class _CalendarScreenState extends State<CalendarScreen>
                       Text(
                         'Ramazan',
                         style: TextStyle(
-                            fontSize: 6.5.rw, fontWeight: FontWeight.bold),
+                            fontSize: SizeConfig.heightMultiplier! < 6 ? 5.8.rw : 6.5.rw, fontWeight: FontWeight.bold),
                       ),
                       Divider(),
                     ],
