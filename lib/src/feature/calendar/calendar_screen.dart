@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
@@ -14,6 +15,8 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen>
     with TickerProviderStateMixin {
   TabController? _tabController;
+
+  var hijriYear = HijriCalendar.fromDate(DateTime.now()).hYear;
 
   @override
   void initState() {
@@ -87,13 +90,13 @@ class _CalendarScreenState extends State<CalendarScreen>
           indicatorColor: PColors.primary,
           tabs: [
             Tab(
-              text: '1442',
+              text: hijriYear.toString(),
             ),
             Tab(
-              text: '1443',
+              text: (hijriYear+1).toString(),
             ),
             Tab(
-              text: '1444',
+              text: (hijriYear+2).toString(),
             ),
           ]);
 
