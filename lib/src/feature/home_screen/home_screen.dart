@@ -1,22 +1,48 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hijri/hijri_calendar.dart';
+import 'package:prayer_times_flutter/src/feature/home_screen/bloc/home_bloc.dart';
+import 'package:prayer_times_flutter/src/feature/home_screen/bloc/home_event.dart';
+import 'package:prayer_times_flutter/src/feature/home_screen/bloc/home_state.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
+import 'package:prayer_times_flutter/src/utils/gregorian_month.dart';
+import 'package:timer_builder/timer_builder.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({ Key? key }) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => HomeBloc(),
+      child: HomeContainer(),
+    );
+  }
 }
 
-Widget _itemsList() => Column(
+class HomeContainer extends StatefulWidget {
+  const HomeContainer({Key? key}) : super(key: key);
+
+  @override
+  _HomeContainerState createState() => _HomeContainerState();
+}
+
+class _HomeContainerState extends State<HomeContainer> {
+
+  late HomeBloc _homeBloc;
+  
+  var hijriDate = HijriCalendar.fromDate(DateTime.now());
+
+  Widget _itemsList(imsak,gunes,ogle,ikindi,aksam,yatsi) => Column(
       children: [
-        _item('Imsak', '02:45', false),
-        _item('Gunes', '02:45', false),
-        _item('Ogle', '02:45', true),
-        _item('Ikindi', '02:45', false),
-        _item('Aksam', '02:45', false),
-        _item('Yatsl', '02:45', false),
+        _item('Imsak', imsak, false),
+        _item('Gunes', gunes, false),
+        _item('Ogle', ogle, true),
+        _item('Ikindi', ikindi, false),
+        _item('Aksam', aksam, false),
+        _item('Yatsl', yatsi, false),
       ],
     );
 
@@ -43,7 +69,7 @@ Widget _item(title, time, selected) => Column(
       ],
     );
 
-Widget _topContainer() => Expanded(
+Widget _topContainer(countryName,cityName) => Expanded(
       flex: 2,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 3.5.rw),
@@ -58,11 +84,11 @@ Widget _topContainer() => Expanded(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Yinanistan',
+                  countryName ?? '',
                   style: TextStyle(fontSize: 4.5.rw, color: Colors.black),
                 ),
                 Text(
-                  'iskece',
+                  cityName ?? '',
                   style: TextStyle(
                       fontSize: 6.8.rw,
                       color: Colors.black,
@@ -75,18 +101,18 @@ Widget _topContainer() => Expanded(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '2 Eylul 2009',
+                  '${DateTime.now().day} ${GregorianMonth.monthName[DateTime.now().month]} ${DateTime.now().year}',
                   style: TextStyle(fontSize: 4.0.rw, color: Colors.black),
                 ),
                 Text(
-                  '12 Ramazan 1430',
+                  '${hijriDate.hDay} ${hijriDate.longMonthName} ${hijriDate.hYear}',
                   style: TextStyle(
                     fontSize: 4.0.rw,
                     color: Colors.black,
                   ),
                 ),
                 Text(
-                  'saat 13:11:32',
+                  'saat ${DateTime.now().hour.timePadded}:${DateTime.now().minute.timePadded}:${DateTime.now().second.timePadded}',
                   style: TextStyle(
                     fontSize: 4.0.rw,
                     color: Colors.black,
@@ -99,7 +125,7 @@ Widget _topContainer() => Expanded(
       ),
     );
 
-Widget _bottomContainer() => Expanded(
+Widget _bottomContainer(imsak,gunes,ogle,ikindi,aksam,yatsi) => Expanded(
     flex: 7,
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 6.3.rw),
@@ -120,7 +146,7 @@ Widget _bottomContainer() => Expanded(
             height: 0.3,
             color: Colors.black,
           ),
-          _itemsList(),
+          _itemsList(imsak,gunes,ogle,ikindi,aksam,yatsi),
           Text(
             'Ikindiye Kalan Sure',
             style: TextStyle(
@@ -128,18 +154,17 @@ Widget _bottomContainer() => Expanded(
               color: Colors.black,
             ),
           ),
-          Text(
-            '03:38:28',
-            style: TextStyle(
-                fontSize: 6.6.rw,
-                color: Colors.black,
-                fontWeight: FontWeight.bold),
-          ),
+          TimerBuilder.periodic(Duration(seconds: 1), builder: (_) {
+              return Text(
+                '${DateTime.now().hour.timePadded}:${DateTime.now().minute.timePadded}:${DateTime.now().second.timePadded}',
+                style: TextStyle(fontSize: 8.1.rw,fontWeight: FontWeight.bold),
+              );
+            }),
         ],
       ),
     ));
 
-Widget _buildBody() => Container(
+Widget _buildBody(imsak,gunes,ogle,ikindi,aksam,yatsi,countryName,cityName) => Container(
       color: PColors.background,
       child: Center(
         child: Container(
@@ -148,20 +173,48 @@ Widget _buildBody() => Container(
           color: Colors.white,
           child: Column(
             children: [
-              _topContainer(),
+              _topContainer(countryName,cityName),
               SizedBox(
                 height: 1.2.rh,
               ),
-              _bottomContainer()
+              _bottomContainer(imsak,gunes,ogle,ikindi,aksam,yatsi)
             ],
           ),
         ),
       ),
     );
 
-class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _homeBloc = BlocProvider.of<HomeBloc>(context);
+    _homeBloc.add(GetHomeData());
+   
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _buildBody();
+    return BlocBuilder<HomeBloc,HomeState>(
+      bloc: _homeBloc,
+      builder: (_,state){
+        if(state is HomeLoadingState){
+          return Center(child: CupertinoActivityIndicator(),);
+        }else if(state is HomeGetDataSuccess){
+
+          return _buildBody(
+            state.imsakPrayer,
+            state.sunrisePrayer,
+            state.dhuhrPrayer,
+            state.asrPrayer,
+            state.maghribPrayer,
+            state.ishaPrayer,
+            state.countryName,
+            state.cityName
+          );
+        }else{
+        return SizedBox();
+      }
+      }
+    );
   }
 }
