@@ -40,8 +40,8 @@ class _SettingContainerState extends State<SettingContainer> {
     super.initState();
 
     _settingBloc = BlocProvider.of<SettingBloc>(context);
-
-    Future.delayed(Duration.zero,() async {
+    setState(() {
+      Future.delayed(Duration(milliseconds: 100),() async {
       sp = await SharedPreferences.getInstance();
       sabahEzani = sp?.getBool('sabahEzani') ?? false;
       ogleEzani = sp?.getBool('ogleEzani') ?? false;
@@ -52,8 +52,10 @@ class _SettingContainerState extends State<SettingContainer> {
       ogleNamaziRemmember = sp?.getBool('ogleNamaziRemmember') ?? false;
       ikindiNamaziRemmember = sp?.getBool('ikindiNamaziRemmember') ?? false;
       activeRemmembers = sp?.getBool('activeRemmembers') ?? false;
+    }
+    );
     });
-      }
+  }
 
   Widget _topContainer() => Expanded(
         flex: 11,
@@ -102,6 +104,7 @@ class _SettingContainerState extends State<SettingContainer> {
                           onChanged: (value) {
                             setState((){
                               sp?.setBool(spKey, value);
+                              print(sp?.getBool(spKey));
                             });
                           }),
                     ),

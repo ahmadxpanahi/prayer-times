@@ -8,6 +8,7 @@ import 'package:prayer_times_flutter/src/feature/home_screen/bloc/home_state.dar
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 import 'package:prayer_times_flutter/src/utils/gregorian_month.dart';
+import 'package:prayer_times_flutter/src/utils/hour_status.dart';
 import 'package:timer_builder/timer_builder.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -35,14 +36,16 @@ class _HomeContainerState extends State<HomeContainer> {
   
   var hijriDate = HijriCalendar.fromDate(DateTime.now());
 
+  int? hStatus;
+
   Widget _itemsList(imsak,gunes,ogle,ikindi,aksam,yatsi) => Column(
       children: [
-        _item('Imsak', imsak, false),
-        _item('Gunes', gunes, false),
-        _item('Ogle', ogle, true),
-        _item('Ikindi', ikindi, false),
-        _item('Aksam', aksam, false),
-        _item('Yatsl', yatsi, false),
+        _item('Imsak', imsak, hStatus == 0 ? true : false),
+        _item('Gunes', gunes,  hStatus == 1 ? true : false),
+        _item('Ogle', ogle,  hStatus == 2 ? true : false),
+        _item('Ikindi', ikindi,  hStatus == 3 ? true : false),
+        _item('Aksam', aksam,  hStatus == 4 ? true : false),
+        _item('Yatsl', yatsi,  hStatus == 5 ? true : false),
       ],
     );
 
@@ -189,7 +192,8 @@ Widget _buildBody(imsak,gunes,ogle,ikindi,aksam,yatsi,countryName,cityName) => C
     super.initState();
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     _homeBloc.add(GetHomeData());
-   
+    Future.delayed(Duration(milliseconds: 1500),(){
+    });
   }
 
   @override
@@ -200,6 +204,14 @@ Widget _buildBody(imsak,gunes,ogle,ikindi,aksam,yatsi,countryName,cityName) => C
         if(state is HomeLoadingState){
           return Center(child: CupertinoActivityIndicator(),);
         }else if(state is HomeGetDataSuccess){
+
+          hStatus = hourStatus(
+            state.imsakPrayer,
+            state.sunrisePrayer,
+            state.dhuhrPrayer,
+            state.asrPrayer,
+            state.maghribPrayer,
+            state.ishaPrayer,);
 
           return _buildBody(
             state.imsakPrayer,

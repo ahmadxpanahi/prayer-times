@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/widget/app_barcode_scanner.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
+import 'package:prayer_times_flutter/src/ui/flushbar.dart';
 
 
 class BarcodeScreen extends StatefulWidget {
@@ -17,27 +18,22 @@ class _BarcodeScreenState extends State<BarcodeScreen> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: PColors.background,
-      child: Expanded(
-        child: AppBarcodeScannerWidget.defaultStyle(
-          label: 'x',
+      child: AppBarcodeScannerWidget.defaultStyle(
+          label: 'Loading camera ...',
           resultCallback: (String code) {
             setState(() {
               _code = code;
               print(code);
-              Flushbar(
-                message: code,
-              ).show(context);
+              showFlushBar(context, code);
             });
           },
         ),
-    )
     );
   }
   }
