@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Ana Sayfa',
+          'Home Page',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),
@@ -51,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Helal Urun Tarama',
+          'Halal product scanning',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),
@@ -66,7 +66,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Ayarlar',
+          'Setting',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),
@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Dini Gunler',
+          'Religious days',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),

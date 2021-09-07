@@ -34,12 +34,12 @@ class HomeBloc extends Bloc<HomeEvent,HomeState> {
       print(response.body);
 
       yield HomeGetDataSuccess(
-        imsakPrayer: times['Imsak'],
+        morningPrayer: times['Imsak'],
         sunrisePrayer: times['Sunrise'],
-        dhuhrPrayer: times['Dhuhr'],
-        asrPrayer: times['Asr'],
-        maghribPrayer: times['Maghrib'],
-        ishaPrayer: times['Isha'],
+        noonPrayer: times['Dhuhr'],
+        afternoonPrayer: times['Asr'],
+        eveningPrayer: times['Maghrib'],
+        nightPrayer: times['Isha'],
         cityName: info['city'],
         countryName: info['country'],
         gregorianDate: dates['gregorian'],

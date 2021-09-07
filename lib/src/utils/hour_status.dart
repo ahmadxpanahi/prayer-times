@@ -51,3 +51,14 @@
   }
 
 }
+
+hourStatusName(value){
+  switch (value){
+    case 0 : return 'Morning';
+    case 1 : return 'Sunrise';
+    case 2 : return 'Noon';
+    case 3 : return 'Afternoon';
+    case 4 : return 'Evening';
+    case 5 : return 'Night';
+  }
+}

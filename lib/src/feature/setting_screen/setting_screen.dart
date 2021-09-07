@@ -65,11 +65,11 @@ class _SettingContainerState extends State<SettingContainer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _settingItem('Sabah Ezani', 'Her gun','sabahEzani'),
-              _settingItem('Ogle Ezani', 'Her gun','ogleEzani'),
-              _settingItem('Ikindi Ezani', 'Her gun','ikindiEzani'),
-              _settingItem('Aksam Ezani', 'Her gun','aksamEzani'),
-              _settingItem('Yatsi Ezani', 'Her gun','yatsiEzani'),
+              _settingItem('Morning azan', 'everyday','sabahEzani'),
+              _settingItem('Noon azan', 'everyday','ogleEzani'),
+              _settingItem('Afternoon azan', 'everyday','ikindiEzani'),
+              _settingItem('Evening azan', 'everyday','aksamEzani'),
+              _settingItem('Night azan', 'everyday','yatsiEzani'),
             ],
           ),
         ),
@@ -83,9 +83,9 @@ class _SettingContainerState extends State<SettingContainer> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _settingItem('Sabah Namazi Hatirtamasi', 'Her gun','sabahNamaziRemmember'),
-                _settingItem('Ogle Namazi Hatirtamasi', 'Her gun','ogleNamaziRemmember'),
-                _settingItem('Ikindi Namazi Hatirtamasi', 'Her gun','ikindiNamaziRemmember'),
+                _settingItem('Reminder of morning prayer', 'everyday','sabahNamaziRemmember'),
+                _settingItem('Reminder of noon prayer', 'everyday','ogleNamaziRemmember'),
+                _settingItem('Reminder of Afternoon prayer', 'everyday','ikindiNamaziRemmember'),
                 Divider(
                   color: Colors.black,
                 ),
@@ -115,7 +115,7 @@ class _SettingContainerState extends State<SettingContainer> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Hatirlatmalar aktif',
+                          'Reminder activator',
                           style: TextStyle(
                               fontSize: SizeConfig.heightMultiplier! < 6
                                   ? 3.2.rw
@@ -185,7 +185,7 @@ class _SettingContainerState extends State<SettingContainer> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 1.0.rh),
             child: Text(
-              'Ezaniar',
+              'Azan',
               style: TextStyle(
                   fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
                   color: Colors.grey),
@@ -195,7 +195,7 @@ class _SettingContainerState extends State<SettingContainer> {
           Padding(
             padding: EdgeInsets.symmetric(vertical: 1.0.rh),
             child: Text(
-              'Lorem Ipsum is simply dummy',
+              'Reminders',
               style: TextStyle(
                   fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
                   color: Colors.grey),
