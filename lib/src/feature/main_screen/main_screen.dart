@@ -91,30 +91,9 @@ class _MainScreenState extends State<MainScreen> {
     ),
   };
 
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-
   @override
   void initState() {
     super.initState();
-
-    Future.delayed(Duration.zero, () async {
-      var dateTime = DateTime(DateTime.now().year, DateTime.now().month,
-    DateTime.now().day, 12, 52, 0);
-
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        12345,
-        "A Notification From My App",
-        "This notification is brought to you by Local Notifcations Package",
-        tz.TZDateTime.now(tz.local).add(Duration(seconds: 20))      ,
-        const NotificationDetails(
-            android: AndroidNotificationDetails(
-                'CHANNEL_ID', 'CHANNEL_NAME', 'CHANNEL_DESCRIPTION')),
-                androidAllowWhileIdle: true,
-                uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-                matchDateTimeComponents: DateTimeComponents.time
-      );
-    });
   }
 
   @override

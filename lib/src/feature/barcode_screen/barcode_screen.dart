@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/widget/app_barcode_scanner.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
@@ -37,3 +36,4 @@ class _BarcodeScreenState extends State<BarcodeScreen> {
     );
   }
   }
+  

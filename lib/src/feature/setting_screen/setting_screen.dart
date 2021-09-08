@@ -10,6 +10,7 @@ import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -35,8 +36,8 @@ class _SettingContainerState extends State<SettingContainer> {
   late bool morningPrayerReminder, noonPrayerReminder, afternoonPrayerReminder;
   late bool reminderActivator;
   SharedPreferences? sp;
-  late SettingBloc _settingBloc;  
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  late SettingBloc _settingBloc;
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
   NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -46,22 +47,24 @@ class _SettingContainerState extends State<SettingContainer> {
   void initState() {
     super.initState();
 
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     setState(() {
       Future.delayed(Duration(milliseconds: 100), () async {
         sp = await SharedPreferences.getInstance();
         morningAzan = sp?.getBool('morning') ?? false;
         noonAzan = sp?.getBool('noon') ?? false;
-        afternoonAzan= sp?.getBool('afternoon') ?? false;
+        afternoonAzan = sp?.getBool('afternoon') ?? false;
         eveningAzan = sp?.getBool('evening') ?? false;
         nightAzan = sp?.getBool('night') ?? false;
         morningPrayerReminder = sp?.getBool('morningPrayerReminder') ?? false;
         noonPrayerReminder = sp?.getBool('noonPrayerReminder') ?? false;
-        afternoonPrayerReminder = sp?.getBool('afternoonPrayerReminder') ?? false;
+        afternoonPrayerReminder =
+            sp?.getBool('afternoonPrayerReminder') ?? false;
         reminderActivator = sp?.getBool('reminderActivator') ?? false;
       });
     });
-
   }
 
   Widget _topContainer() => Expanded(
@@ -200,13 +203,36 @@ class _SettingContainerState extends State<SettingContainer> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 1.0.rh),
               child: GestureDetector(
-                onTap: ()async{
-                  await flutterLocalNotificationsPlugin.show(
-                    12345,
-                    'hey you',
-                    'lorem ipsum for notification',
-                    platformChannelSpecifics,
-                  );
+                onTap: () async {
+                  // const AndroidNotificationDetails
+                  //     androidPlatformChannelSpecifics =
+                  //     AndroidNotificationDetails('your channel id',
+                  //         'your channel name', 'your channel description',
+                  //         importance: Importance.max,
+                  //         priority: Priority.high,
+                  //         ticker: 'ticker');
+                  // const NotificationDetails platformChannelSpecifics =
+                  //     NotificationDetails(
+                  //         android: androidPlatformChannelSpecifics);
+                  // await flutterLocalNotificationsPlugin?.show(
+                  //     0, 'plain title', 'plain body', platformChannelSpecifics,
+                  //     payload: 'item x');
+
+                  await flutterLocalNotificationsPlugin?.zonedSchedule(
+                      0,
+                      'daily scheduled notification title',
+                      'daily scheduled notification body',
+                      _nextInstanceOfTenAM(),
+                      const NotificationDetails(
+                        android: AndroidNotificationDetails(
+                            'daily notification channel id',
+                            'daily notification channel name',
+                            'daily notification description'),
+                      ),
+                      androidAllowWhileIdle: true,
+                      uiLocalNotificationDateInterpretation:
+                          UILocalNotificationDateInterpretation.absoluteTime,
+                      matchDateTimeComponents: DateTimeComponents.time);
                 },
                 child: Text(
                   'Reminders',
@@ -221,6 +247,16 @@ class _SettingContainerState extends State<SettingContainer> {
           ],
         ),
       );
+
+  tz.TZDateTime _nextInstanceOfTenAM() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 20, 16);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }
 
   @override
   Widget build(BuildContext context) {
