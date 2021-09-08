@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/barcode_screen.dart';
 import 'package:prayer_times_flutter/src/feature/calendar/calendar_screen.dart';
 import 'package:prayer_times_flutter/src/feature/home_screen/home_screen.dart';
@@ -7,6 +9,7 @@ import 'package:prayer_times_flutter/src/feature/setting_screen/setting_screen.d
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -14,7 +17,7 @@ class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
 }
-  
+
 class _MainScreenState extends State<MainScreen> {
   String _screenName = 'home';
 
@@ -26,7 +29,6 @@ class _MainScreenState extends State<MainScreen> {
   };
 
   Map<String, PreferredSize> appbars = {
-
     'home': PreferredSize(
       preferredSize: Size.fromHeight(100),
       child: Container(
@@ -89,6 +91,32 @@ class _MainScreenState extends State<MainScreen> {
     ),
   };
 
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      var dateTime = DateTime(DateTime.now().year, DateTime.now().month,
+    DateTime.now().day, 12, 52, 0);
+
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        12345,
+        "A Notification From My App",
+        "This notification is brought to you by Local Notifcations Package",
+        tz.TZDateTime.now(tz.local).add(Duration(seconds: 20))      ,
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+                'CHANNEL_ID', 'CHANNEL_NAME', 'CHANNEL_DESCRIPTION')),
+                androidAllowWhileIdle: true,
+                uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+                matchDateTimeComponents: DateTimeComponents.time
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,7 +124,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: appbars[_screenName],
       bottomNavigationBar: PBottomNavigation(
         screenName: _screenName,
-        change: (String scName){
+        change: (String scName) {
           setState(() {
             _screenName = scName;
           });
