@@ -1,9 +1,9 @@
 import 'package:another_flushbar/flushbar.dart';
 
-showFlushBar(context,message){
+showFlushBar(context,message, {seconds: 2}){
   Flushbar(
     message: message,
-    duration: Duration(seconds: 2),
+    duration: Duration(seconds: seconds),
     flushbarPosition: FlushbarPosition.TOP,
   ).show(context);
 }
