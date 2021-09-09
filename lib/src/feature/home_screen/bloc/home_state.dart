@@ -16,23 +16,23 @@ class HomeGetDataSuccess extends HomeState {
   HomeGetDataSuccess(
       {this.countryName,
       this.cityName,
-      this.asrPrayer,
-      this.dhuhrPrayer,
-      this.imsakPrayer,
-      this.ishaPrayer,
+      this.afternoonPrayer,
+      this.noonPrayer,
+      this.morningPrayer,
+      this.nightPrayer,
       this.gregorianDate,
-      this.maghribPrayer,
+      this.eveningPrayer,
       this.hijriDate,
       this.sunrisePrayer});
 
   final String? countryName;
   final String? cityName;
-  final String? imsakPrayer;
+  final String? morningPrayer;
   final String? sunrisePrayer;
-  final String? dhuhrPrayer;
-  final String? asrPrayer;
-  final String? maghribPrayer;
-  final String? ishaPrayer;
+  final String? noonPrayer;
+  final String? afternoonPrayer;
+  final String? eveningPrayer;
+  final String? nightPrayer;
   final String? gregorianDate;
   final String? hijriDate;
 
@@ -40,13 +40,13 @@ class HomeGetDataSuccess extends HomeState {
   List<Object?> get props => [
         countryName,
         cityName,
-        imsakPrayer,
+        morningPrayer,
         sunrisePrayer,
-        dhuhrPrayer,
-        asrPrayer,
-        maghribPrayer,
+        noonPrayer,
+        afternoonPrayer,
+        eveningPrayer,
         hijriDate,
-        ishaPrayer,
+        nightPrayer,
         gregorianDate
       ];
 }

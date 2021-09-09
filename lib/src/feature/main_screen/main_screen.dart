@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/barcode_screen.dart';
 import 'package:prayer_times_flutter/src/feature/calendar/calendar_screen.dart';
 import 'package:prayer_times_flutter/src/feature/home_screen/home_screen.dart';
@@ -7,6 +9,7 @@ import 'package:prayer_times_flutter/src/feature/setting_screen/setting_screen.d
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -14,7 +17,7 @@ class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
 }
-  
+
 class _MainScreenState extends State<MainScreen> {
   String _screenName = 'home';
 
@@ -26,7 +29,6 @@ class _MainScreenState extends State<MainScreen> {
   };
 
   Map<String, PreferredSize> appbars = {
-
     'home': PreferredSize(
       preferredSize: Size.fromHeight(100),
       child: Container(
@@ -36,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Ana Sayfa',
+          'Home Page',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),
@@ -51,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Helal Urun Tarama',
+          'Halal product scanning',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),
@@ -66,7 +68,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Ayarlar',
+          'Setting',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),
@@ -81,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
         color: PColors.primary,
         height: 13.3.rh,
         child: Text(
-          'Dini Gunler',
+          'Religious days',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
         ),
@@ -90,13 +92,18 @@ class _MainScreenState extends State<MainScreen> {
   };
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[_screenName],
       appBar: appbars[_screenName],
       bottomNavigationBar: PBottomNavigation(
         screenName: _screenName,
-        change: (String scName){
+        change: (String scName) {
           setState(() {
             _screenName = scName;
           });

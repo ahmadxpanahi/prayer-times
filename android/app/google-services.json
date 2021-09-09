@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "813681072223",
+    "project_id": "prayertimes-1f8c7",
+    "storage_bucket": "prayertimes-1f8c7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813681072223:android:37326d54d023450f8d23ea",
+        "android_client_info": {
+          "package_name": "com.example.prayer_times_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813681072223-luau8qh5531hb9e6lkte3b6rei1pee34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKLV6PnsuOW0IZh7yeLB96nRl940Kqdfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813681072223-luau8qh5531hb9e6lkte3b6rei1pee34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

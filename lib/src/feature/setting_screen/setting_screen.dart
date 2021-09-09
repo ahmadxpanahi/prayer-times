@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_state.dart';
@@ -8,8 +9,11 @@ import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+
 class SettingScreen extends StatelessWidget {
-  const SettingScreen({ Key? key }) : super(key: key);
+  const SettingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +32,38 @@ class SettingContainer extends StatefulWidget {
 }
 
 class _SettingContainerState extends State<SettingContainer> {
-  
-  late bool sabahEzani,ogleEzani,ikindiEzani,aksamEzani,yatsiEzani;
-  late bool sabahNamaziRemmember,ogleNamaziRemmember,ikindiNamaziRemmember;
-  late bool activeRemmembers;
+  late bool morningAzan, noonAzan, afternoonAzan, eveningAzan, nightAzan;
+  late bool morningPrayerReminder, noonPrayerReminder, afternoonPrayerReminder;
+  late bool reminderActivator;
   SharedPreferences? sp;
   late SettingBloc _settingBloc;
-  
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+
+  NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: AndroidNotificationDetails(
+          'channelId', 'channelName', 'channelDescription'));
+
   @override
   void initState() {
     super.initState();
 
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     setState(() {
-      Future.delayed(Duration(milliseconds: 100),() async {
-      sp = await SharedPreferences.getInstance();
-      sabahEzani = sp?.getBool('sabahEzani') ?? false;
-      ogleEzani = sp?.getBool('ogleEzani') ?? false;
-      ikindiEzani = sp?.getBool('ikindiEzani') ?? false;
-      aksamEzani = sp?.getBool('aksamEzani') ?? false;
-      yatsiEzani = sp?.getBool('yatsiEzani') ?? false;
-      sabahNamaziRemmember = sp?.getBool('sabahNamaziRemmember') ?? false;
-      ogleNamaziRemmember = sp?.getBool('ogleNamaziRemmember') ?? false;
-      ikindiNamaziRemmember = sp?.getBool('ikindiNamaziRemmember') ?? false;
-      activeRemmembers = sp?.getBool('activeRemmembers') ?? false;
-    }
-    );
+      Future.delayed(Duration(milliseconds: 100), () async {
+        sp = await SharedPreferences.getInstance();
+        morningAzan = sp?.getBool('morning') ?? false;
+        noonAzan = sp?.getBool('noon') ?? false;
+        afternoonAzan = sp?.getBool('afternoon') ?? false;
+        eveningAzan = sp?.getBool('evening') ?? false;
+        nightAzan = sp?.getBool('night') ?? false;
+        morningPrayerReminder = sp?.getBool('morningPrayerReminder') ?? false;
+        noonPrayerReminder = sp?.getBool('noonPrayerReminder') ?? false;
+        afternoonPrayerReminder =
+            sp?.getBool('afternoonPrayerReminder') ?? false;
+        reminderActivator = sp?.getBool('reminderActivator') ?? false;
+      });
     });
   }
 
@@ -65,11 +75,11 @@ class _SettingContainerState extends State<SettingContainer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _settingItem('Sabah Ezani', 'Her gun','sabahEzani'),
-              _settingItem('Ogle Ezani', 'Her gun','ogleEzani'),
-              _settingItem('Ikindi Ezani', 'Her gun','ikindiEzani'),
-              _settingItem('Aksam Ezani', 'Her gun','aksamEzani'),
-              _settingItem('Yatsi Ezani', 'Her gun','yatsiEzani'),
+              _settingItem('Morning azan', 'everyday', 'sabahEzani'),
+              _settingItem('Noon azan', 'everyday', 'ogleEzani'),
+              _settingItem('Afternoon azan', 'everyday', 'ikindiEzani'),
+              _settingItem('Evening azan', 'everyday', 'aksamEzani'),
+              _settingItem('Night azan', 'everyday', 'yatsiEzani'),
             ],
           ),
         ),
@@ -83,9 +93,12 @@ class _SettingContainerState extends State<SettingContainer> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _settingItem('Sabah Namazi Hatirtamasi', 'Her gun','sabahNamaziRemmember'),
-                _settingItem('Ogle Namazi Hatirtamasi', 'Her gun','ogleNamaziRemmember'),
-                _settingItem('Ikindi Namazi Hatirtamasi', 'Her gun','ikindiNamaziRemmember'),
+                _settingItem('Reminder of morning prayer', 'everyday',
+                    'sabahNamaziRemmember'),
+                _settingItem('Reminder of noon prayer', 'everyday',
+                    'ogleNamaziRemmember'),
+                _settingItem('Reminder of Afternoon prayer', 'everyday',
+                    'ikindiNamaziRemmember'),
                 Divider(
                   color: Colors.black,
                 ),
@@ -95,51 +108,45 @@ class _SettingContainerState extends State<SettingContainer> {
       );
 
   Widget _bottomSettingItem(spKey) => Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Transform.scale(
-                      scale: SizeConfig.heightMultiplier! < 6 ? 0.6 : 1,
-                      child: CupertinoSwitch(
-                          value: sp?.getBool(spKey)??false,
-                          onChanged: (value) {
-                            setState((){
-                              sp?.setBool(spKey, value);
-                              print(sp?.getBool(spKey));
-                            });
-                          }),
-                    ),
-                    SizedBox(
-                      width: SizeConfig.heightMultiplier! > 6 ? 3.0.rw : 2.2,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Hatirlatmalar aktif',
-                          style: TextStyle(
-                              fontSize: SizeConfig.heightMultiplier! < 6
-                                  ? 3.2.rw
-                                  : 4.5.rw,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          'Lorem Ipsum is simply dummy',
-                          style: TextStyle(
-                              fontSize: SizeConfig.heightMultiplier! < 6
-                                  ? 3.0.rw
-                                  : 4.2.rw,
-                              color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Transform.scale(
+            scale: SizeConfig.heightMultiplier! < 6 ? 0.6 : 1,
+            child: CupertinoSwitch(
+                value: sp?.getBool(spKey) ?? false,
+                onChanged: (value) {
+                  setState(() {
+                    sp?.setBool(spKey, value);
+                    print(sp?.getBool(spKey));
+                  });
+                }),
+          ),
+          SizedBox(
+            width: SizeConfig.heightMultiplier! > 6 ? 3.0.rw : 2.2,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Reminder activator',
+                style: TextStyle(
+                    fontSize:
+                        SizeConfig.heightMultiplier! < 6 ? 3.2.rw : 4.5.rw,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Lorem Ipsum is simply dummy',
+                style: TextStyle(
+                    fontSize:
+                        SizeConfig.heightMultiplier! < 6 ? 3.0.rw : 4.2.rw,
+                    color: Colors.grey),
+              ),
+            ],
+          ),
+        ],
+      );
 
-  Widget _settingItem(
-    title,
-    subTitle,
-    spKey
-  ) {
+  Widget _settingItem(title, subTitle, spKey) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -163,9 +170,9 @@ class _SettingContainerState extends State<SettingContainer> {
         Transform.scale(
           scale: SizeConfig.heightMultiplier! < 6 ? 0.6 : 1,
           child: CupertinoSwitch(
-              value: sp?.getBool(spKey)??false,
+              value: sp?.getBool(spKey) ?? false,
               onChanged: (value) {
-                setState((){
+                setState(() {
                   sp?.setBool(spKey, value);
                   print(sp?.getBool(spKey));
                 });
@@ -176,42 +183,86 @@ class _SettingContainerState extends State<SettingContainer> {
   }
 
   _buildBody() => Container(
-      padding: EdgeInsets.symmetric(horizontal: 4.5.rw),
-      color: PColors.background,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 1.0.rh),
-            child: Text(
-              'Ezaniar',
-              style: TextStyle(
-                  fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
-                  color: Colors.grey),
+        padding: EdgeInsets.symmetric(horizontal: 4.5.rw),
+        color: PColors.background,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 1.0.rh),
+              child: Text(
+                'Azan',
+                style: TextStyle(
+                    fontSize:
+                        SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
+                    color: Colors.grey),
+              ),
             ),
-          ),
-          _topContainer(),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 1.0.rh),
-            child: Text(
-              'Lorem Ipsum is simply dummy',
-              style: TextStyle(
-                  fontSize: SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
-                  color: Colors.grey),
+            _topContainer(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 1.0.rh),
+              child: GestureDetector(
+                onTap: () async {
+                  // const AndroidNotificationDetails
+                  //     androidPlatformChannelSpecifics =
+                  //     AndroidNotificationDetails('your channel id',
+                  //         'your channel name', 'your channel description',
+                  //         importance: Importance.max,
+                  //         priority: Priority.high,
+                  //         ticker: 'ticker');
+                  // const NotificationDetails platformChannelSpecifics =
+                  //     NotificationDetails(
+                  //         android: androidPlatformChannelSpecifics);
+                  // await flutterLocalNotificationsPlugin?.show(
+                  //     0, 'plain title', 'plain body', platformChannelSpecifics,
+                  //     payload: 'item x');
+
+                  await flutterLocalNotificationsPlugin?.zonedSchedule(
+                      0,
+                      'daily scheduled notification title',
+                      'daily scheduled notification body',
+                      _nextInstanceOfTenAM(),
+                      const NotificationDetails(
+                        android: AndroidNotificationDetails(
+                            'daily notification channel id',
+                            'daily notification channel name',
+                            'daily notification description'),
+                      ),
+                      androidAllowWhileIdle: true,
+                      uiLocalNotificationDateInterpretation:
+                          UILocalNotificationDateInterpretation.absoluteTime,
+                      matchDateTimeComponents: DateTimeComponents.time);
+                },
+                child: Text(
+                  'Reminders',
+                  style: TextStyle(
+                      fontSize:
+                          SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
+                      color: Colors.grey),
+                ),
+              ),
             ),
-          ),
-          _bottomContainer()
-        ],
-      ),
-    );
+            _bottomContainer()
+          ],
+        ),
+      );
+
+  tz.TZDateTime _nextInstanceOfTenAM() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate =
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 20, 16);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }
 
   @override
-  Widget build(BuildContext context){
-
-    return BlocListener<SettingBloc,SettingState>(
-      listener: (_,event){
-        if(event is SaveSettingEvent){
+  Widget build(BuildContext context) {
+    return BlocListener<SettingBloc, SettingState>(
+      listener: (_, event) {
+        if (event is SaveSettingEvent) {
           setState(() {});
         }
       },

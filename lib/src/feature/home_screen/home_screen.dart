@@ -38,14 +38,14 @@ class _HomeContainerState extends State<HomeContainer> {
 
   int? hStatus;
 
-  Widget _itemsList(imsak,gunes,ogle,ikindi,aksam,yatsi) => Column(
+  Widget _itemsList(morning,sunrise,noon,afternoon,evening,night) => Column(
       children: [
-        _item('Imsak', imsak, hStatus == 0 ? true : false),
-        _item('Gunes', gunes,  hStatus == 1 ? true : false),
-        _item('Ogle', ogle,  hStatus == 2 ? true : false),
-        _item('Ikindi', ikindi,  hStatus == 3 ? true : false),
-        _item('Aksam', aksam,  hStatus == 4 ? true : false),
-        _item('Yatsl', yatsi,  hStatus == 5 ? true : false),
+        _item('Morning', morning, hStatus == 0 ? true : false),
+        _item('Sunrise', sunrise,  hStatus == 1 ? true : false),
+        _item('Noon', noon,  hStatus == 2 ? true : false),
+        _item('Afternoon', afternoon,  hStatus == 3 ? true : false),
+        _item('Evening', evening,  hStatus == 4 ? true : false),
+        _item('Night', night,  hStatus == 5 ? true : false),
       ],
     );
 
@@ -128,7 +128,7 @@ Widget _topContainer(countryName,cityName) => Expanded(
       ),
     );
 
-Widget _bottomContainer(imsak,gunes,ogle,ikindi,aksam,yatsi) => Expanded(
+Widget _bottomContainer(morning,sunrise,noon,afternoon,evening,night) => Expanded(
     flex: 7,
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 6.3.rw),
@@ -139,7 +139,7 @@ Widget _bottomContainer(imsak,gunes,ogle,ikindi,aksam,yatsi) => Expanded(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            'Simdi ogle Vakti',
+            'Now it\'s ${hourStatusName(hStatus)} time',
             style: TextStyle(
                 fontSize: 6.6.rw,
                 color: Colors.black,
@@ -149,9 +149,9 @@ Widget _bottomContainer(imsak,gunes,ogle,ikindi,aksam,yatsi) => Expanded(
             height: 0.3,
             color: Colors.black,
           ),
-          _itemsList(imsak,gunes,ogle,ikindi,aksam,yatsi),
+          _itemsList(morning,sunrise,noon,afternoon,evening,night),
           Text(
-            'Ikindiye Kalan Sure',
+            hourStatusName(hStatus == 5 ? 0 : hStatus!+1),
             style: TextStyle(
               fontSize: 4.3.rw,
               color: Colors.black,
@@ -167,7 +167,7 @@ Widget _bottomContainer(imsak,gunes,ogle,ikindi,aksam,yatsi) => Expanded(
       ),
     ));
 
-Widget _buildBody(imsak,gunes,ogle,ikindi,aksam,yatsi,countryName,cityName) => Container(
+Widget _buildBody(morning,sunrise,noon,afternoon,evening,night,countryName,cityName) => Container(
       color: PColors.background,
       child: Center(
         child: Container(
@@ -180,7 +180,7 @@ Widget _buildBody(imsak,gunes,ogle,ikindi,aksam,yatsi,countryName,cityName) => C
               SizedBox(
                 height: 1.2.rh,
               ),
-              _bottomContainer(imsak,gunes,ogle,ikindi,aksam,yatsi)
+              _bottomContainer(morning,sunrise,noon,afternoon,evening,night)
             ],
           ),
         ),
@@ -206,20 +206,20 @@ Widget _buildBody(imsak,gunes,ogle,ikindi,aksam,yatsi,countryName,cityName) => C
         }else if(state is HomeGetDataSuccess){
 
           hStatus = hourStatus(
-            state.imsakPrayer,
+            state.morningPrayer,
             state.sunrisePrayer,
-            state.dhuhrPrayer,
-            state.asrPrayer,
-            state.maghribPrayer,
-            state.ishaPrayer,);
+            state.noonPrayer,
+            state.afternoonPrayer,
+            state.eveningPrayer,
+            state.nightPrayer,);
 
           return _buildBody(
-            state.imsakPrayer,
+            state.morningPrayer,
             state.sunrisePrayer,
-            state.dhuhrPrayer,
-            state.asrPrayer,
-            state.maghribPrayer,
-            state.ishaPrayer,
+            state.noonPrayer,
+            state.afternoonPrayer,
+            state.eveningPrayer,
+            state.nightPrayer,
             state.countryName,
             state.cityName
           );
