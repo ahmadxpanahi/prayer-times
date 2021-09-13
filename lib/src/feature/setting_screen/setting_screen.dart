@@ -51,9 +51,10 @@ class _SettingContainerState extends State<SettingContainer> {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     _settingBloc = BlocProvider.of<SettingBloc>(context);
-    setState(() {
-      Future.delayed(Duration(milliseconds: 100), () async {
-        sp = await SharedPreferences.getInstance();
+
+    Future.delayed(Duration(milliseconds: 100), () async {
+      sp = await SharedPreferences.getInstance();
+      setState(() {
         morningAzan = sp?.getBool('morning') ?? false;
         noonAzan = sp?.getBool('noon') ?? false;
         afternoonAzan = sp?.getBool('afternoon') ?? false;
