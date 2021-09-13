@@ -3,12 +3,23 @@ import 'package:prayer_times_flutter/src/feature/main_screen/main_screen.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'src/core/notification_service.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().init(); 
+
+  await _configureLocalTimeZone();
+  await NotificationService().init();
   
   runApp(MyApp());
+}
+
+Future<void> _configureLocalTimeZone() async {
+  tz.initializeTimeZones();
+  final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName!));
 }
 
 class MyApp extends StatelessWidget {

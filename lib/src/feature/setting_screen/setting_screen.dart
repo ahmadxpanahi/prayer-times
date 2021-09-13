@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_state.dart';
+import 'package:prayer_times_flutter/src/ui/flushbar.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
@@ -204,23 +205,9 @@ class _SettingContainerState extends State<SettingContainer> {
               padding: EdgeInsets.symmetric(vertical: 1.0.rh),
               child: GestureDetector(
                 onTap: () async {
-                  // const AndroidNotificationDetails
-                  //     androidPlatformChannelSpecifics =
-                  //     AndroidNotificationDetails('your channel id',
-                  //         'your channel name', 'your channel description',
-                  //         importance: Importance.max,
-                  //         priority: Priority.high,
-                  //         ticker: 'ticker');
-                  // const NotificationDetails platformChannelSpecifics =
-                  //     NotificationDetails(
-                  //         android: androidPlatformChannelSpecifics);
-                  // await flutterLocalNotificationsPlugin?.show(
-                  //     0, 'plain title', 'plain body', platformChannelSpecifics,
-                  //     payload: 'item x');
-
-                  await flutterLocalNotificationsPlugin?.zonedSchedule(
-                      0,
-                      'daily scheduled notification title',
+                  await flutterLocalNotificationsPlugin!.zonedSchedule(
+                      1,
+                      'daily scheduled notification title!!',
                       'daily scheduled notification body',
                       _nextInstanceOfTenAM(),
                       const NotificationDetails(
@@ -251,7 +238,7 @@ class _SettingContainerState extends State<SettingContainer> {
   tz.TZDateTime _nextInstanceOfTenAM() {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 20, 16);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, 15, 25);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
