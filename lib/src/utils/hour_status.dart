@@ -1,14 +1,17 @@
- hourStatus(imsak,gunes,ogle,ikindi,aksam,yatsi){
+import 'package:prayer_times_flutter/src/utils/extensions.dart';
+
+hourStatus(imsak,gunes,ogle,ikindi,aksam,yatsi){
 
   var hour = DateTime.now().hour;
   var min = DateTime.now().minute;
-
-  DateTime _imsak = DateTime.parse('2020-01-02 $imsak:00');
-  DateTime _gunes = DateTime.parse('2020-01-02 $gunes:00');
-  DateTime _ogle = DateTime.parse('2020-01-02 $ogle:00');
-  DateTime _ikindi = DateTime.parse('2020-01-02 $ikindi:00');
-  DateTime _aksam = DateTime.parse('2020-01-02 $aksam:00');
-  DateTime _yatsi = DateTime.parse('2020-01-02 $yatsi:00');
+  DateTime now = DateTime.now();
+  String nowString = '${now.year}-${now.month.timePadded}-${now.day.timePadded}';
+  DateTime _imsak = DateTime.parse('$nowString $imsak:00');
+  DateTime _gunes = DateTime.parse('$nowString $gunes:00');
+  DateTime _ogle = DateTime.parse('$nowString $ogle:00');
+  DateTime _ikindi = DateTime.parse('$nowString $ikindi:00');
+  DateTime _aksam = DateTime.parse('$nowString $aksam:00');
+  DateTime _yatsi = DateTime.parse('$nowString $yatsi:00');
 
   if(hour < _imsak.hour){
     return 0;

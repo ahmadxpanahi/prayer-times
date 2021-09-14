@@ -1,15 +1,17 @@
+import 'dart:isolate';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_state.dart';
+import 'package:prayer_times_flutter/src/utils/alarm.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class SettingScreen extends StatelessWidget {
@@ -48,7 +50,6 @@ class _SettingContainerState extends State<SettingContainer> {
     super.initState();
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     setState(() {
       Future.delayed(Duration(milliseconds: 100), () async {
@@ -75,11 +76,11 @@ class _SettingContainerState extends State<SettingContainer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _settingItem('Morning azan', 'everyday', 'sabahEzani'),
-              _settingItem('Noon azan', 'everyday', 'ogleEzani'),
-              _settingItem('Afternoon azan', 'everyday', 'ikindiEzani'),
-              _settingItem('Evening azan', 'everyday', 'aksamEzani'),
-              _settingItem('Night azan', 'everyday', 'yatsiEzani'),
+              _settingItem('Morning azan', 'everyday', 'morning'),
+              _settingItem('Noon azan', 'everyday', 'noon'),
+              _settingItem('Afternoon azan', 'everyday', 'afternoon'),
+              _settingItem('Evening azan', 'everyday', 'evening'),
+              _settingItem('Night azan', 'everyday', 'night'),
             ],
           ),
         ),
@@ -94,15 +95,15 @@ class _SettingContainerState extends State<SettingContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _settingItem('Reminder of morning prayer', 'everyday',
-                    'sabahNamaziRemmember'),
+                    'morningPrayerReminder'),
                 _settingItem('Reminder of noon prayer', 'everyday',
-                    'ogleNamaziRemmember'),
+                    'noonPrayerReminder'),
                 _settingItem('Reminder of Afternoon prayer', 'everyday',
-                    'ikindiNamaziRemmember'),
+                    'afternoonPrayerReminder'),
                 Divider(
                   color: Colors.black,
                 ),
-                _bottomSettingItem('activeRemmembers')
+                _bottomSettingItem('reminderActivator')
               ],
             )),
       );
@@ -172,9 +173,21 @@ class _SettingContainerState extends State<SettingContainer> {
           child: CupertinoSwitch(
               value: sp?.getBool(spKey) ?? false,
               onChanged: (value) {
-                setState(() {
+                setState((){
                   sp?.setBool(spKey, value);
-                  print(sp?.getBool(spKey));
+                  var v = sp?.getBool(spKey);
+                  print(v);
+                  if(v!){
+                    DateTime now = DateTime.now();
+                    String nowString = '${now.year}-${now.month.timePadded}-${now.day.timePadded}';
+                    String? prayerTime = sp?.getString('${spKey}Time') ?? '00:00';
+                    DateTime time = DateTime.parse('$nowString $prayerTime:00');
+                    print(time);
+                    Future.delayed(Duration.zero,()async{
+                      await AndroidAlarmManager.oneShotAt(time, 0, playAlarm);
+                      
+                    });
+                  }
                 });
               }),
         )
@@ -270,3 +283,4 @@ class _SettingContainerState extends State<SettingContainer> {
     );
   }
 }
+

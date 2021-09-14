@@ -38,7 +38,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState> {
         sunrisePrayer: times['Sunrise'],
         noonPrayer: times['Dhuhr'],
         afternoonPrayer: times['Asr'],
-        eveningPrayer: times['Maghrib'],
+        eveningPrayer: '09:45',
         nightPrayer: times['Isha'],
         cityName: info['city'],
         countryName: info['country'],
