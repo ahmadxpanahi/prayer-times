@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_state.dart';
@@ -10,7 +11,6 @@ import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class SettingScreen extends StatelessWidget {
@@ -51,20 +51,28 @@ class _SettingContainerState extends State<SettingContainer> {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     _settingBloc = BlocProvider.of<SettingBloc>(context);
+    _loadPrefs();
+  }
 
+  void _loadPrefs() {
     Future.delayed(Duration(milliseconds: 100), () async {
       sp = await SharedPreferences.getInstance();
+
       setState(() {
-        morningAzan = sp?.getBool('morning') ?? false;
-        noonAzan = sp?.getBool('noon') ?? false;
-        afternoonAzan = sp?.getBool('afternoon') ?? false;
-        eveningAzan = sp?.getBool('evening') ?? false;
-        nightAzan = sp?.getBool('night') ?? false;
-        morningPrayerReminder = sp?.getBool('morningPrayerReminder') ?? false;
-        noonPrayerReminder = sp?.getBool('noonPrayerReminder') ?? false;
+        morningAzan = sp?.getBool(PreferencesManager.MORNING_ALARM) ?? false;
+        noonAzan = sp?.getBool(PreferencesManager.NOON_ALARM) ?? false;
+        afternoonAzan =
+            sp?.getBool(PreferencesManager.AFTERNOON_ALARM) ?? false;
+        eveningAzan = sp?.getBool(PreferencesManager.SUNSET_ALARM) ?? false;
+        nightAzan = sp?.getBool(PreferencesManager.NIGHT_ALARM) ?? false;
+        morningPrayerReminder =
+            sp?.getBool(PreferencesManager.MORNING_NOTIFICATION) ?? false;
+        noonPrayerReminder =
+            sp?.getBool(PreferencesManager.NOON_NOTIFICATION) ?? false;
         afternoonPrayerReminder =
-            sp?.getBool('afternoonPrayerReminder') ?? false;
-        reminderActivator = sp?.getBool('reminderActivator') ?? false;
+            sp?.getBool(PreferencesManager.AFTERNOON_NOTIFICATION) ?? false;
+        reminderActivator =
+            sp?.getBool(PreferencesManager.NOTIFICATIONS_ENABLED) ?? false;
       });
     });
   }
@@ -77,11 +85,31 @@ class _SettingContainerState extends State<SettingContainer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _settingItem('Morning azan', 'everyday', 'sabahEzani'),
-              _settingItem('Noon azan', 'everyday', 'ogleEzani'),
-              _settingItem('Afternoon azan', 'everyday', 'ikindiEzani'),
-              _settingItem('Evening azan', 'everyday', 'aksamEzani'),
-              _settingItem('Night azan', 'everyday', 'yatsiEzani'),
+              _settingItem(
+                'Morning azan',
+                'everyday',
+                PreferencesManager.MORNING_ALARM,
+              ),
+              _settingItem(
+                'Noon azan',
+                'everyday',
+                PreferencesManager.NOON_ALARM,
+              ),
+              _settingItem(
+                'Afternoon azan',
+                'everyday',
+                PreferencesManager.AFTERNOON_ALARM,
+              ),
+              _settingItem(
+                'Evening azan',
+                'everyday',
+                PreferencesManager.SUNSET_ALARM,
+              ),
+              _settingItem(
+                'Night azan',
+                'everyday',
+                PreferencesManager.NIGHT_ALARM,
+              ),
             ],
           ),
         ),
@@ -95,31 +123,43 @@ class _SettingContainerState extends State<SettingContainer> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _settingItem('Reminder of morning prayer', 'everyday',
-                    'sabahNamaziRemmember'),
-                _settingItem('Reminder of noon prayer', 'everyday',
-                    'ogleNamaziRemmember'),
-                _settingItem('Reminder of Afternoon prayer', 'everyday',
-                    'ikindiNamaziRemmember'),
+                _settingItem(
+                  'Reminder of morning prayer',
+                  'everyday',
+                  PreferencesManager.MORNING_NOTIFICATION,
+                ),
+                _settingItem(
+                  'Reminder of noon prayer',
+                  'everyday',
+                  PreferencesManager.NOON_NOTIFICATION,
+                ),
+                _settingItem(
+                  'Reminder of Afternoon prayer',
+                  'everyday',
+                  PreferencesManager.AFTERNOON_NOTIFICATION,
+                ),
                 Divider(
                   color: Colors.black,
                 ),
-                _bottomSettingItem('activeRemmembers')
+                _bottomSettingItem()
               ],
             )),
       );
 
-  Widget _bottomSettingItem(spKey) => Row(
+  Widget _bottomSettingItem() => Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Transform.scale(
             scale: SizeConfig.heightMultiplier! < 6 ? 0.6 : 1,
             child: CupertinoSwitch(
-                value: sp?.getBool(spKey) ?? false,
+                value: sp?.getBool(PreferencesManager.NOTIFICATIONS_ENABLED) ??
+                    false,
                 onChanged: (value) {
                   setState(() {
-                    sp?.setBool(spKey, value);
-                    print(sp?.getBool(spKey));
+                    sp?.setBool(
+                        PreferencesManager.NOTIFICATIONS_ENABLED, value);
+                    print(
+                        sp?.getBool(PreferencesManager.NOTIFICATIONS_ENABLED));
                   });
                 }),
           ),
@@ -174,10 +214,54 @@ class _SettingContainerState extends State<SettingContainer> {
           child: CupertinoSwitch(
               value: sp?.getBool(spKey) ?? false,
               onChanged: (value) {
-                setState(() {
-                  sp?.setBool(spKey, value);
-                  print(sp?.getBool(spKey));
-                });
+                print('Switch changed to -> $value');
+                switch (spKey) {
+                  case PreferencesManager.MORNING_ALARM:
+                    _settingBloc.add(ToggleAlarm(HorizonType.Morning));
+                    break;
+                  case PreferencesManager.NOON_ALARM:
+                    _settingBloc.add(ToggleAlarm(HorizonType.Noon));
+                    break;
+                  case PreferencesManager.AFTERNOON_ALARM:
+                    _settingBloc.add(ToggleAlarm(HorizonType.Afternoon));
+                    break;
+                  case PreferencesManager.SUNSET_ALARM:
+                    _settingBloc.add(ToggleAlarm(HorizonType.Sunset));
+                    break;
+                  case PreferencesManager.NIGHT_ALARM:
+                    _settingBloc.add(ToggleAlarm(HorizonType.Night));
+                    break;
+                  case PreferencesManager.MORNING_NOTIFICATION:
+                    _settingBloc.add(ToggleNotification(
+                      HorizonType.Morning,
+                      value ? ActionType.Enable : ActionType.Disable,
+                    ));
+                    break;
+                  case PreferencesManager.NOON_NOTIFICATION:
+                    _settingBloc.add(ToggleNotification(
+                      HorizonType.Noon,
+                      value ? ActionType.Enable : ActionType.Disable,
+                    ));
+                    break;
+                  case PreferencesManager.AFTERNOON_NOTIFICATION:
+                    _settingBloc.add(ToggleNotification(
+                      HorizonType.Afternoon,
+                      value ? ActionType.Enable : ActionType.Disable,
+                    ));
+                    break;
+                  case PreferencesManager.SUNSET_ALARM:
+                    _settingBloc.add(ToggleNotification(
+                      HorizonType.Sunset,
+                      value ? ActionType.Enable : ActionType.Disable,
+                    ));
+                    break;
+                  case PreferencesManager.NIGHT_NOTIFICATION:
+                    _settingBloc.add(ToggleNotification(
+                      HorizonType.Night,
+                      value ? ActionType.Enable : ActionType.Disable,
+                    ));
+                    break;
+                }
               }),
         )
       ],
@@ -205,23 +289,7 @@ class _SettingContainerState extends State<SettingContainer> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 1.0.rh),
               child: GestureDetector(
-                onTap: () async {
-                  await flutterLocalNotificationsPlugin!.zonedSchedule(
-                      1,
-                      'daily scheduled notification title!!',
-                      'daily scheduled notification body',
-                      _nextInstanceOfTenAM(),
-                      const NotificationDetails(
-                        android: AndroidNotificationDetails(
-                            'daily notification channel id',
-                            'daily notification channel name',
-                            'daily notification description'),
-                      ),
-                      androidAllowWhileIdle: true,
-                      uiLocalNotificationDateInterpretation:
-                          UILocalNotificationDateInterpretation.absoluteTime,
-                      matchDateTimeComponents: DateTimeComponents.time);
-                },
+                onTap: () async {},
                 child: Text(
                   'Reminders',
                   style: TextStyle(
@@ -236,22 +304,14 @@ class _SettingContainerState extends State<SettingContainer> {
         ),
       );
 
-  tz.TZDateTime _nextInstanceOfTenAM() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, 15, 25);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    return scheduledDate;
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocListener<SettingBloc, SettingState>(
-      listener: (_, event) {
-        if (event is SaveSettingEvent) {
-          setState(() {});
+      listener: (_, state) {
+        if (state is AlarmToggled) {
+          _loadPrefs();
+        } else if (state is NotificationToggled) {
+          _loadPrefs();
         }
       },
       child: _buildBody(),
