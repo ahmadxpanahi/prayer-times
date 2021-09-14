@@ -1,3 +1,5 @@
+import 'dart:isolate';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/feature/main_screen/main_screen.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
@@ -12,6 +14,8 @@ Future<void> main() async {
 
   await _configureLocalTimeZone();
   await NotificationService().init();
+
+  await AndroidAlarmManager.initialize();
   
   runApp(MyApp());
 }

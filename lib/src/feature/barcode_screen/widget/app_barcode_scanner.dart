@@ -36,7 +36,7 @@ class _BarcodePermissionWidget extends StatefulWidget {
 
 class _BarcodePermissionWidgetState extends State<_BarcodePermissionWidget> {
   bool _isGranted = false;
-
+  String? _inputValue;
   bool _useCameraScan = true;
 
   @override
