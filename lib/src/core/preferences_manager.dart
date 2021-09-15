@@ -12,4 +12,10 @@ class PreferencesManager {
   static const String NIGHT_NOTIFICATION = "_nightNotificationKey";
 
   static const String NOTIFICATIONS_ENABLED = "_notificationsEnabledKey";
+
+  static const String MORNING_PRAYER_TIME = "_morningPrayerTimeKey";
+  static const String NOON_PRAYER_TIME = "_noonPrayerTimeKey";
+  static const String AFTERNOON_PRAYER_TIME = "_afternoonPrayerTimeKey";
+  static const String SUNSET_PRAYER_TIME = "_sunsetPrayerTimeKey";
+  static const String NIGHT_PRAYER_TIME = "_nightPrayerTimeKey";
 }

@@ -48,11 +48,7 @@ class _HomeContainerState extends State<HomeContainer> {
     });
     _homeBloc = BlocProvider.of<HomeBloc>(context);
     _homeBloc.add(GetHomeData());
-    Future.delayed(Duration(milliseconds: 1500), () async{
-        
-
-    });
-    
+    Future.delayed(Duration(milliseconds: 1500), () async {});
   }
 
   Widget _itemsList(morning, sunrise, noon, afternoon, evening, night) =>
@@ -221,13 +217,6 @@ class _HomeContainerState extends State<HomeContainer> {
               child: CupertinoActivityIndicator(),
             );
           } else if (state is HomeGetDataSuccess) {
-
-            sp?.setString('morningTime', state.morningPrayer!);
-            sp?.setString('noonTime', state.afternoonPrayer!);
-            sp?.setString('afternoonTime', state.afternoonPrayer!);
-            sp?.setString('eveningTime', state.eveningPrayer!);
-            sp?.setString('nightTime', state.nightPrayer!);
-
             hStatus = hourStatus(
               state.morningPrayer,
               state.sunrisePrayer,
@@ -246,9 +235,13 @@ class _HomeContainerState extends State<HomeContainer> {
                 state.nightPrayer,
                 state.countryName,
                 state.cityName);
-          } else {
-            return SizedBox();
+          } else if (state is HomeGetDataError) {
+            return Center(
+              child: Text(state.error),
+            );
           }
+
+          return SizedBox();
         });
   }
 }

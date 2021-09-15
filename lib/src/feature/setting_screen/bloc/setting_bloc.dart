@@ -4,6 +4,7 @@ import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_state.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:prayer_times_flutter/src/utils/time_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -53,23 +54,47 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     switch (event.horizonType) {
       case HorizonType.Morning:
         _toggleSP(PreferencesManager.MORNING_NOTIFICATION);
-        // _scheduleNotification(NotificationService.MORNING_NOTIFICATION_ID, message, event.actionType);
+        _scheduleNotification(
+          NotificationService.MORNING_NOTIFICATION_ID,
+          "Morning prayer time arrives in 5 minutes",
+          event.actionType,
+        );
         break;
       case HorizonType.Noon:
         _toggleSP(PreferencesManager.NOON_NOTIFICATION);
+        _scheduleNotification(
+          NotificationService.NOON_NOTIFICATION_ID,
+          "Noon prayer time arrives in 5 minutes",
+          event.actionType,
+        );
         break;
       case HorizonType.Afternoon:
         _toggleSP(PreferencesManager.AFTERNOON_NOTIFICATION);
+        _scheduleNotification(
+          NotificationService.AFTERNOON_NOTIFICATION_ID,
+          "Afternoon prayer time arrives in 5 minutes",
+          event.actionType,
+        );
         break;
       case HorizonType.Sunset:
         _toggleSP(PreferencesManager.SUNSET_NOTIFICATION);
+        _scheduleNotification(
+          NotificationService.SUNSET_NOTIFICATION_ID,
+          "Sunset prayer time arrives in 5 minutes",
+          event.actionType,
+        );
         break;
       case HorizonType.Night:
         _toggleSP(PreferencesManager.NIGHT_NOTIFICATION);
+        _scheduleNotification(
+          NotificationService.NIGHT_NOTIFICATION_ID,
+          "Night prayer time arrives in 5 minutes",
+          event.actionType,
+        );
         break;
     }
 
-  yield NotificationToggled();
+    yield NotificationToggled();
   }
 
   void _toggleSP(String key) async {
@@ -82,42 +107,61 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
   void _scheduleNotification(
       int id, String message, ActionType actionType) async {
-        int hour = 0;
-        int minute = 0;
-        switch(id) {
-          case NotificationService.MORNING_NOTIFICATION_ID:          
-          break;
-          case NotificationService.NOON_NOTIFICATION_ID:
-          break;
-          case NotificationService.AFTERNOON_NOTIFICATION_ID:
-          break;
-          case NotificationService.SUNSET_NOTIFICATION_ID:
-          break;
-          case NotificationService.NIGHT_NOTIFICATION_ID:
-          break;
-        }
+    String time = "00:00";
+    switch (id) {
+      case NotificationService.MORNING_NOTIFICATION_ID:
+        time = sp?.getString(PreferencesManager.MORNING_PRAYER_TIME) ?? '00:00';
+        break;
+      case NotificationService.NOON_NOTIFICATION_ID:
+        time = sp?.getString(PreferencesManager.NOON_PRAYER_TIME) ?? '00:00';
+        break;
+      case NotificationService.AFTERNOON_NOTIFICATION_ID:
+        time =
+            sp?.getString(PreferencesManager.AFTERNOON_PRAYER_TIME) ?? '00:00';
+        break;
+      case NotificationService.SUNSET_NOTIFICATION_ID:
+        time = sp?.getString(PreferencesManager.SUNSET_PRAYER_TIME) ?? '00:00';
+        break;
+      case NotificationService.NIGHT_NOTIFICATION_ID:
+        time = sp?.getString(PreferencesManager.NIGHT_PRAYER_TIME) ?? '00:00';
+        break;
+    }
 
-    await flutterLocalNotificationsPlugin!.zonedSchedule(
-        id,
-        'Its prayer time!',
-        message,
-        _getNotificationTime(hour, minute),
-        const NotificationDetails(
-          android: AndroidNotificationDetails(
-              'daily notification channel id',
-              'daily notification channel name',
-              'daily notification description'),
-        ),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time);
+    if (time == '00:00') return;
+
+    switch (actionType) {
+      case ActionType.Enable:
+        await flutterLocalNotificationsPlugin?.zonedSchedule(
+            id,
+            'Its prayer time!',
+            message,
+            _getNotificationTime(time),
+            const NotificationDetails(
+              android: AndroidNotificationDetails(
+                  'daily notification channel id',
+                  'daily notification channel name',
+                  'daily notification description'),
+            ),
+            androidAllowWhileIdle: true,
+            uiLocalNotificationDateInterpretation:
+                UILocalNotificationDateInterpretation.absoluteTime,
+            matchDateTimeComponents: DateTimeComponents.time);        
+        break;
+      case ActionType.Disable:
+        await flutterLocalNotificationsPlugin?.cancel(id);
+        break;
+    }
   }
 
-  tz.TZDateTime _getNotificationTime(int hour, int minute) {
+  tz.TZDateTime _getNotificationTime(String time) {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    final int hour = TimeUtils.getHourFromTime(time);
+    final int minute = TimeUtils.getMinuteFromTime(time);
+
     tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+        tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute)
+            .add(Duration(minutes: -5));
+    
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }

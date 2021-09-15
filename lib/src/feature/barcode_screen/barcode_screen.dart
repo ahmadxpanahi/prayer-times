@@ -15,9 +15,7 @@ class _BarcodeScreenState extends State<BarcodeScreen> {
 
   @override
   void initState() {
-    super.initState();
-
-    print("barcode_screen");
+    super.initState();    
   }
 
   @override
@@ -29,8 +27,7 @@ class _BarcodeScreenState extends State<BarcodeScreen> {
         resultCallback: (String code) {
           Future.delayed(Duration.zero, () {
             setState(() {
-              _code = code;
-              print(code);
+              _code = code;              
               showFlushBar(context, code);
             });
           });

@@ -77,74 +77,78 @@ class _SettingContainerState extends State<SettingContainer> {
     });
   }
 
-  Widget _topContainer() => Expanded(
-        flex: 11,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
-          color: Colors.white,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _settingItem(
-                'Morning azan',
-                'everyday',
-                PreferencesManager.MORNING_ALARM,
-              ),
-              _settingItem(
-                'Noon azan',
-                'everyday',
-                PreferencesManager.NOON_ALARM,
-              ),
-              _settingItem(
-                'Afternoon azan',
-                'everyday',
-                PreferencesManager.AFTERNOON_ALARM,
-              ),
-              _settingItem(
-                'Evening azan',
-                'everyday',
-                PreferencesManager.SUNSET_ALARM,
-              ),
-              _settingItem(
-                'Night azan',
-                'everyday',
-                PreferencesManager.NIGHT_ALARM,
-              ),
-            ],
-          ),
+  Widget _topContainer() => Container(
+        padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _settingItem(
+              'Morning azan',
+              'everyday',
+              PreferencesManager.MORNING_ALARM,
+            ),
+            _settingItem(
+              'Noon azan',
+              'everyday',
+              PreferencesManager.NOON_ALARM,
+            ),
+            _settingItem(
+              'Afternoon azan',
+              'everyday',
+              PreferencesManager.AFTERNOON_ALARM,
+            ),
+            _settingItem(
+              'Evening azan',
+              'everyday',
+              PreferencesManager.SUNSET_ALARM,
+            ),
+            _settingItem(
+              'Night azan',
+              'everyday',
+              PreferencesManager.NIGHT_ALARM,
+            ),
+          ],
         ),
       );
 
-  Widget _bottomContainer() => Expanded(
-        flex: 10,
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _settingItem(
-                  'Reminder of morning prayer',
-                  'everyday',
-                  PreferencesManager.MORNING_NOTIFICATION,
-                ),
-                _settingItem(
-                  'Reminder of noon prayer',
-                  'everyday',
-                  PreferencesManager.NOON_NOTIFICATION,
-                ),
-                _settingItem(
-                  'Reminder of Afternoon prayer',
-                  'everyday',
-                  PreferencesManager.AFTERNOON_NOTIFICATION,
-                ),
-                Divider(
-                  color: Colors.black,
-                ),
-                _bottomSettingItem()
-              ],
-            )),
-      );
+  Widget _bottomContainer() => Container(
+      padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _settingItem(
+            'Reminder of Morning prayer',
+            'everyday',
+            PreferencesManager.MORNING_NOTIFICATION,
+          ),
+          _settingItem(
+            'Reminder of Noon prayer',
+            'everyday',
+            PreferencesManager.NOON_NOTIFICATION,
+          ),
+          _settingItem(
+            'Reminder of Afternoon prayer',
+            'everyday',
+            PreferencesManager.AFTERNOON_NOTIFICATION,
+          ),
+          _settingItem(
+            'Reminder of Sunset prayer',
+            'everyday',
+            PreferencesManager.SUNSET_NOTIFICATION,
+          ),
+          _settingItem(
+            'Reminder of Night prayer',
+            'everyday',
+            PreferencesManager.NIGHT_NOTIFICATION,
+          ),
+          // Divider(
+          //   color: Colors.black,
+          // ),
+          // _bottomSettingItem()
+        ],
+      ));
 
   Widget _bottomSettingItem() => Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -158,8 +162,6 @@ class _SettingContainerState extends State<SettingContainer> {
                   setState(() {
                     sp?.setBool(
                         PreferencesManager.NOTIFICATIONS_ENABLED, value);
-                    print(
-                        sp?.getBool(PreferencesManager.NOTIFICATIONS_ENABLED));
                   });
                 }),
           ),
@@ -188,95 +190,101 @@ class _SettingContainerState extends State<SettingContainer> {
         ],
       );
 
-  Widget _settingItem(title, subTitle, spKey) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _settingItem(title, subTitle, spKey) => Padding(
+        padding: EdgeInsets.only(
+          top: 8,
+          bottom: 8,
+          left: 6,
+          right: 3,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: SizeConfig.heightMultiplier! < 6 ? 3.2.rw : 4.5.rw,
-                  fontWeight: FontWeight.bold),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                      fontSize:
+                          SizeConfig.heightMultiplier! < 6 ? 3.2.rw : 4.5.rw,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  subTitle,
+                  style: TextStyle(
+                      fontSize:
+                          SizeConfig.heightMultiplier! < 6 ? 3.0.rw : 4.2.rw,
+                      color: Colors.grey),
+                ),
+              ],
             ),
-            Text(
-              subTitle,
-              style: TextStyle(
-                  fontSize: SizeConfig.heightMultiplier! < 6 ? 3.0.rw : 4.2.rw,
-                  color: Colors.grey),
-            ),
+            Transform.scale(
+              scale: SizeConfig.heightMultiplier! < 6 ? 0.6 : 1,
+              child: CupertinoSwitch(
+                  value: sp?.getBool(spKey) ?? false,
+                  onChanged: (value) {
+                    print('Switch changed to -> $value');
+                    switch (spKey) {
+                      case PreferencesManager.MORNING_ALARM:
+                        _settingBloc.add(ToggleAlarm(HorizonType.Morning));
+                        break;
+                      case PreferencesManager.NOON_ALARM:
+                        _settingBloc.add(ToggleAlarm(HorizonType.Noon));
+                        break;
+                      case PreferencesManager.AFTERNOON_ALARM:
+                        _settingBloc.add(ToggleAlarm(HorizonType.Afternoon));
+                        break;
+                      case PreferencesManager.SUNSET_ALARM:
+                        _settingBloc.add(ToggleAlarm(HorizonType.Sunset));
+                        break;
+                      case PreferencesManager.NIGHT_ALARM:
+                        _settingBloc.add(ToggleAlarm(HorizonType.Night));
+                        break;
+                      case PreferencesManager.MORNING_NOTIFICATION:
+                        _settingBloc.add(ToggleNotification(
+                          HorizonType.Morning,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
+                        break;
+                      case PreferencesManager.NOON_NOTIFICATION:
+                        _settingBloc.add(ToggleNotification(
+                          HorizonType.Noon,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
+                        break;
+                      case PreferencesManager.AFTERNOON_NOTIFICATION:
+                        _settingBloc.add(ToggleNotification(
+                          HorizonType.Afternoon,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
+                        break;
+                      case PreferencesManager.SUNSET_ALARM:
+                        _settingBloc.add(ToggleNotification(
+                          HorizonType.Sunset,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
+                        break;
+                      case PreferencesManager.NIGHT_NOTIFICATION:
+                        _settingBloc.add(ToggleNotification(
+                          HorizonType.Night,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
+                        break;
+                    }
+                  }),
+            )
           ],
         ),
-        Transform.scale(
-          scale: SizeConfig.heightMultiplier! < 6 ? 0.6 : 1,
-          child: CupertinoSwitch(
-              value: sp?.getBool(spKey) ?? false,
-              onChanged: (value) {
-                print('Switch changed to -> $value');
-                switch (spKey) {
-                  case PreferencesManager.MORNING_ALARM:
-                    _settingBloc.add(ToggleAlarm(HorizonType.Morning));
-                    break;
-                  case PreferencesManager.NOON_ALARM:
-                    _settingBloc.add(ToggleAlarm(HorizonType.Noon));
-                    break;
-                  case PreferencesManager.AFTERNOON_ALARM:
-                    _settingBloc.add(ToggleAlarm(HorizonType.Afternoon));
-                    break;
-                  case PreferencesManager.SUNSET_ALARM:
-                    _settingBloc.add(ToggleAlarm(HorizonType.Sunset));
-                    break;
-                  case PreferencesManager.NIGHT_ALARM:
-                    _settingBloc.add(ToggleAlarm(HorizonType.Night));
-                    break;
-                  case PreferencesManager.MORNING_NOTIFICATION:
-                    _settingBloc.add(ToggleNotification(
-                      HorizonType.Morning,
-                      value ? ActionType.Enable : ActionType.Disable,
-                    ));
-                    break;
-                  case PreferencesManager.NOON_NOTIFICATION:
-                    _settingBloc.add(ToggleNotification(
-                      HorizonType.Noon,
-                      value ? ActionType.Enable : ActionType.Disable,
-                    ));
-                    break;
-                  case PreferencesManager.AFTERNOON_NOTIFICATION:
-                    _settingBloc.add(ToggleNotification(
-                      HorizonType.Afternoon,
-                      value ? ActionType.Enable : ActionType.Disable,
-                    ));
-                    break;
-                  case PreferencesManager.SUNSET_ALARM:
-                    _settingBloc.add(ToggleNotification(
-                      HorizonType.Sunset,
-                      value ? ActionType.Enable : ActionType.Disable,
-                    ));
-                    break;
-                  case PreferencesManager.NIGHT_NOTIFICATION:
-                    _settingBloc.add(ToggleNotification(
-                      HorizonType.Night,
-                      value ? ActionType.Enable : ActionType.Disable,
-                    ));
-                    break;
-                }
-              }),
-        )
-      ],
-    );
-  }
+      );
 
   _buildBody() => Container(
         padding: EdgeInsets.symmetric(horizontal: 4.5.rw),
         color: PColors.background,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 1.0.rh),
+              padding: EdgeInsets.symmetric(vertical: 2.0.rh),
               child: Text(
                 'Azan',
                 style: TextStyle(
@@ -287,7 +295,7 @@ class _SettingContainerState extends State<SettingContainer> {
             ),
             _topContainer(),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 1.0.rh),
+              padding: EdgeInsets.symmetric(vertical: 2.0.rh),
               child: GestureDetector(
                 onTap: () async {},
                 child: Text(

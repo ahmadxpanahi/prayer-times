@@ -50,3 +50,12 @@ class HomeGetDataSuccess extends HomeState {
         gregorianDate
       ];
 }
+
+class HomeGetDataError extends HomeState {
+  String error;
+
+  HomeGetDataError(this.error);
+
+  @override  
+  List<Object?> get props => [error];
+}
