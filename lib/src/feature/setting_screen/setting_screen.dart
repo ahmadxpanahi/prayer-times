@@ -1,4 +1,3 @@
-import 'dart:isolate';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -34,9 +33,9 @@ class SettingContainer extends StatefulWidget {
 }
 
 class _SettingContainerState extends State<SettingContainer> {
-  late bool morningAzan, noonAzan, afternoonAzan, eveningAzan, nightAzan;
-  late bool morningPrayerReminder, noonPrayerReminder, afternoonPrayerReminder;
-  late bool reminderActivator;
+  bool? morningAzan, noonAzan, afternoonAzan, eveningAzan, nightAzan;
+  bool? morningPrayerReminder, noonPrayerReminder, afternoonPrayerReminder;
+  bool? reminderActivator;
   SharedPreferences? sp;
   late SettingBloc _settingBloc;
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
@@ -51,8 +50,9 @@ class _SettingContainerState extends State<SettingContainer> {
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     _settingBloc = BlocProvider.of<SettingBloc>(context);
-    setState(() {
-      Future.delayed(Duration(milliseconds: 100), () async {
+  }
+
+  Future<SharedPreferences?> _getData()async{
         sp = await SharedPreferences.getInstance();
         morningAzan = sp?.getBool('morning') ?? false;
         noonAzan = sp?.getBool('noon') ?? false;
@@ -64,8 +64,7 @@ class _SettingContainerState extends State<SettingContainer> {
         afternoonPrayerReminder =
             sp?.getBool('afternoonPrayerReminder') ?? false;
         reminderActivator = sp?.getBool('reminderActivator') ?? false;
-      });
-    });
+        return sp;
   }
 
   Widget _topContainer() => Expanded(
@@ -217,20 +216,6 @@ class _SettingContainerState extends State<SettingContainer> {
               padding: EdgeInsets.symmetric(vertical: 1.0.rh),
               child: GestureDetector(
                 onTap: () async {
-                  // const AndroidNotificationDetails
-                  //     androidPlatformChannelSpecifics =
-                  //     AndroidNotificationDetails('your channel id',
-                  //         'your channel name', 'your channel description',
-                  //         importance: Importance.max,
-                  //         priority: Priority.high,
-                  //         ticker: 'ticker');
-                  // const NotificationDetails platformChannelSpecifics =
-                  //     NotificationDetails(
-                  //         android: androidPlatformChannelSpecifics);
-                  // await flutterLocalNotificationsPlugin?.show(
-                  //     0, 'plain title', 'plain body', platformChannelSpecifics,
-                  //     payload: 'item x');
-
                   await flutterLocalNotificationsPlugin?.zonedSchedule(
                       0,
                       'daily scheduled notification title',
@@ -279,7 +264,16 @@ class _SettingContainerState extends State<SettingContainer> {
           setState(() {});
         }
       },
-      child: _buildBody(),
+      child: FutureBuilder(
+        future: _getData(),
+        builder: (context,snapshot){
+          if(snapshot.hasData){
+            return _buildBody();
+          }else{
+            return Center(child: CupertinoActivityIndicator(),);
+          }
+        },
+      ),
     );
   }
 }

@@ -31,7 +31,7 @@ class HomeBloc extends Bloc<HomeEvent,HomeState> {
       Map info = json.decode(response.body)['results']['location'];
       Map dates = json.decode(response.body)['results']['datetime'][0]['date'];
 
-      print(response.body);
+      // print(response.body);
 
       yield HomeGetDataSuccess(
         morningPrayer: times['Imsak'],
