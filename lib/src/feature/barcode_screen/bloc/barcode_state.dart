@@ -18,8 +18,10 @@ class GetBarcodeDataSuccess extends BarcodeState{
 }
 
 class BarcodeErrorState extends BarcodeState{
+  String? error;
+  BarcodeErrorState({this.error});
   @override
-  List<Object?> get props =>[];
+  List<Object?> get props =>[error];
 
 }
 

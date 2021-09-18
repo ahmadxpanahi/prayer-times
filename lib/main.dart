@@ -1,9 +1,9 @@
 import 'dart:isolate';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/feature/food_list/food_list_screen.dart';
 import 'package:prayer_times_flutter/src/feature/main_screen/main_screen.dart';
+import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'src/core/notification_service.dart';
@@ -21,16 +21,7 @@ Future<void> main() async {
 
   runApp(MyApp());
 
-  await AndroidAlarmManager.periodic(Duration(minutes: 1), 2, () async {
-    print("it woooorked");
-    final assetsAudioPlayer = AssetsAudioPlayer();
-
-    await assetsAudioPlayer.open(
-      Audio("assets/audios/alarm.mp3"),
-    );
-
-    print("but not audio?!");
-  });
+  
 }
 
 Future<void> _configureLocalTimeZone() async {
@@ -55,6 +46,10 @@ class MyApp extends StatelessWidget {
                 routes: {
                   '/foods' : (context) => MainScreen('barcode')
                 },
+                theme: ThemeData(
+                  primaryColor: PColors.primary,
+                  backgroundColor: PColors.primary
+                ),
                 debugShowCheckedModeBanner: false,
                 title: 'Prayer times flutter',
                 home: MainScreen('home'));

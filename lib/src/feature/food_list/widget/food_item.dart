@@ -26,7 +26,7 @@ class FoodItem extends StatelessWidget {
           height: 15.0.rw,
           width: 15.0.rw,
           decoration: BoxDecoration(
-            image: DecorationImage(image: NetworkImage('http://10.0.2.2:3000/${food?.image}',),fit: BoxFit.fill),
+            image: DecorationImage(image: NetworkImage('http://192.168.1.11:3000/${food?.image}',),fit: BoxFit.fill),
             color: Colors.greenAccent,
             shape: BoxShape.circle,
             boxShadow: [

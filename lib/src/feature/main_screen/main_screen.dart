@@ -61,22 +61,11 @@ class _MainScreenState extends State<MainScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              SizedBox(
-                width: 7.0.rw,
-              ),
               Text(
                 'Halal product scanning',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
               ),
-              GestureDetector(  
-                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodeScreen()));},
-                child: Icon(
-                  Icons.qr_code_scanner,
-                  color: Colors.white,
-                  size: 6.8.rw,
-                ),
-              )
             ],
           )),
     ),

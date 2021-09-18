@@ -3,83 +3,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/bloc/barcode_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/widget/app_barcode_scanner.dart';
-import 'package:prayer_times_flutter/src/feature/food_list/food_list_screen.dart';
-import 'package:prayer_times_flutter/src/feature/main_screen/main_screen.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
-import 'package:prayer_times_flutter/src/ui/flushbar.dart';
+import 'package:prayer_times_flutter/src/ui/dialog.dart';
+import 'package:prayer_times_flutter/src/utils/food.dart';
 
 class BarcodeScreen extends StatelessWidget {
-  const BarcodeScreen({Key? key}) : super(key: key);
+  List<Food> foodList;
+  BarcodeScreen(this.foodList, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => BarcodeBloc(),
-      child: BarcodeContainer(),
+      child: BarcodeContainer(foodList),
     );
   }
 }
 
 class BarcodeContainer extends StatefulWidget {
-  const BarcodeContainer({Key? key}) : super(key: key);
+  List<Food> foodList;
+  BarcodeContainer(this.foodList, {Key? key}) : super(key: key);
 
   @override
   _BarcodeContainerState createState() => _BarcodeContainerState();
 }
-
 class _BarcodeContainerState extends State<BarcodeContainer> {
   String _code = '';
-  String tmpCode = '8468761684';
   late BarcodeBloc _barcodeBloc;
   Widget? scanner;
+
   @override
   void initState() {
     super.initState();
     _barcodeBloc = BlocProvider.of<BarcodeBloc>(context);
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        try {
-          scanner = Container();
-          // AppBarcodeScannerWidget.defaultStyle(
-          //   label: 'Loading camera ...',
-          //   resultCallback: (String code) {
 
-          //       setState(() {
-          //         _code = code;
-          //         showFlushBar(context, code);
-          //       });
-
-          //   },
-          // );
-        } catch (e) {
-          scanner = Center(child: Text(e.toString()));
-        }
-      });
-    });
-
-    Future.delayed(
-        Duration(
-          seconds: 3,
-        ), ()async {
-      showDialog(
-          context: context,
-          builder: (_) => AlertDialog(
-                  title: Text('Halal'),
-                  content: Text('Code: $tmpCode'),
-                  actions: [
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.popAndPushNamed(context, '/foods');
-                        },
-                        child: Text('Ok'),
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                                  (Set<MaterialState> states) {
-                            return PColors.primary ?? Colors.green;
-                          }),
-                        ))
-                  ]));
+    setState(() {
+      try {
+        scanner = AppBarcodeScannerWidget.defaultStyle(
+          label: 'Loading camera ...',
+          resultCallback: (String code) {
+            setState(() {
+              _code = code;
+              List<Food>? _currentFood = widget.foodList
+                  .where((food) => food.barcode!.contains(_code))
+                  .toList();
+              if (_currentFood.length > 0) {
+                pShowDialog(context, _currentFood, 'Code: $_code');
+              } else {
+                pShowDialog(context, _currentFood, 'Barcode is not registered!');
+              }
+            });
+          },
+        );
+      } catch (e) {
+        scanner = Center(child: Text(e.toString()));
+      }
     });
   }
 
