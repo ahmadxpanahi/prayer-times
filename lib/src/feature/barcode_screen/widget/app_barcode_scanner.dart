@@ -7,7 +7,6 @@ late String _label;
 late Function(String result) _resultCallback;
 
 class AppBarcodeScannerWidget extends StatefulWidget {
-
   AppBarcodeScannerWidget.defaultStyle({
     Function(String result)? resultCallback,
     String label = 'BARCODE SCANNER',
@@ -43,21 +42,23 @@ class _BarcodePermissionWidgetState extends State<_BarcodePermissionWidget> {
   void initState() {
     super.initState();
 
-    TargetPlatform platform = Theme.of(context).platform;
-    if (!kIsWeb) {
-      if (platform == TargetPlatform.android ||
-          platform == TargetPlatform.iOS) {
-        _requestMobilePermission();
+    Future.delayed(Duration(milliseconds: 200), () {
+      TargetPlatform platform = Theme.of(context).platform;
+      if (!kIsWeb) {
+        if (platform == TargetPlatform.android ||
+            platform == TargetPlatform.iOS) {
+          _requestMobilePermission();
+        } else {
+          setState(() {
+            _isGranted = true;
+          });
+        }
       } else {
         setState(() {
           _isGranted = true;
         });
       }
-    } else {
-      setState(() {
-        _isGranted = true;
-      });
-    }
+    });
   }
 
   void _requestMobilePermission() async {
