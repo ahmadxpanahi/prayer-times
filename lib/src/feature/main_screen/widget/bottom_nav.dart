@@ -20,7 +20,9 @@ class _PBottomNavigationState extends State<PBottomNavigation> {
       Expanded(
         child: GestureDetector(
           onTap: () {
-            tap();
+            setState(() {
+              tap();
+            });
           },
           child: Container(
             color: Colors.transparent,

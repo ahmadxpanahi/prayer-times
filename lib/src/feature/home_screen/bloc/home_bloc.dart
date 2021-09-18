@@ -41,7 +41,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       await _savePrayerTimes(times);
 
       yield HomeGetDataSuccess(
-          morningPrayer: times['Imsak'],
+          morningPrayer: '10:00',
           sunrisePrayer: times['Sunrise'],
           noonPrayer: times['Dhuhr'],
           afternoonPrayer: times['Asr'],

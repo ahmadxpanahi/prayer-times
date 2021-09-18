@@ -1,15 +1,13 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/barcode_screen.dart';
 import 'package:prayer_times_flutter/src/feature/calendar/calendar_screen.dart';
+import 'package:prayer_times_flutter/src/feature/food_list/food_list_screen.dart';
 import 'package:prayer_times_flutter/src/feature/home_screen/home_screen.dart';
 import 'package:prayer_times_flutter/src/feature/main_screen/widget/bottom_nav.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/setting_screen.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -21,9 +19,17 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   String _screenName = 'home';
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
   Map<String, Widget> screens = {
     'home': HomeScreen(),
-    'barcode': BarcodeScreen(),
+    'barcode': FoodListScreen(),
     'setting': SettingScreen(),
     'calendar': CalendarScreen(),
   };
@@ -33,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
       preferredSize: Size.fromHeight(100),
       child: Container(
         padding: EdgeInsets.only(
-            top: SizeConfig.heightMultiplier! >= 7 ? 5.5.rh : 4.2.rh),
+        top: SizeConfig.heightMultiplier! >= 7 ? 5.5.rh : 4.2.rh),
         alignment: Alignment.center,
         color: PColors.primary,
         height: 13.3.rh,
@@ -47,17 +53,32 @@ class _MainScreenState extends State<MainScreen> {
     'barcode': PreferredSize(
       preferredSize: Size.fromHeight(100),
       child: Container(
-        padding: EdgeInsets.only(
-            top: SizeConfig.heightMultiplier! >= 7 ? 5.5.rh : 4.2.rh),
-        alignment: Alignment.center,
-        color: PColors.primary,
-        height: 13.3.rh,
-        child: Text(
-          'Halal product scanning',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
-        ),
-      ),
+          padding: EdgeInsets.only(
+              top: SizeConfig.heightMultiplier! >= 7 ? 5.5.rh : 4.2.rh),
+          alignment: Alignment.center,
+          color: PColors.primary,
+          height: 13.3.rh,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                width: 7.0.rw,
+              ),
+              Text(
+                'Halal product scanning',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
+              ),
+              GestureDetector(  
+                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => BarcodeScreen()));},
+                child: Icon(
+                  Icons.qr_code_scanner,
+                  color: Colors.white,
+                  size: 6.8.rw,
+                ),
+              )
+            ],
+          )),
     ),
     'setting': PreferredSize(
       preferredSize: Size.fromHeight(100),
@@ -91,13 +112,6 @@ class _MainScreenState extends State<MainScreen> {
     ),
   };
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: screens[_screenName],
       appBar: appbars[_screenName],

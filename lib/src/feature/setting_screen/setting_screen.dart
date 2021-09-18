@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
@@ -5,6 +6,7 @@ import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_blo
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_state.dart';
 import 'package:prayer_times_flutter/src/ui/flushbar.dart';
+import 'package:prayer_times_flutter/src/utils/alarm.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
@@ -33,9 +35,9 @@ class SettingContainer extends StatefulWidget {
 }
 
 class _SettingContainerState extends State<SettingContainer> {
-  late bool morningAzan, noonAzan, afternoonAzan, eveningAzan, nightAzan;
-  late bool morningPrayerReminder, noonPrayerReminder, afternoonPrayerReminder;
-  late bool reminderActivator;
+  bool? morningAzan, noonAzan, afternoonAzan, eveningAzan, nightAzan;
+  bool? morningPrayerReminder, noonPrayerReminder, afternoonPrayerReminder;
+  bool? reminderActivator;
   SharedPreferences? sp;
   late SettingBloc _settingBloc;
   FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
@@ -52,6 +54,25 @@ class _SettingContainerState extends State<SettingContainer> {
 
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     _loadPrefs();
+  }
+
+  void _setAlarm(spKey, value) {
+    setState(() {
+      sp?.setBool(spKey, value);
+      var v = sp?.getBool(spKey);
+      print(v);
+      if (v!) {
+        DateTime now = DateTime.now();
+        String nowString =
+            '${now.year}-${now.month.timePadded}-${now.day.timePadded}';
+        String? prayerTime = sp?.getString('${spKey}Time') ?? '00:00';
+        DateTime time = DateTime.parse('$nowString $prayerTime:00');
+        print(time);
+        Future.delayed(Duration.zero, () async {
+          await AndroidAlarmManager.periodic(Duration(milliseconds: 1500), 2, playAlarm);
+        });
+      }
+    });
   }
 
   void _loadPrefs() {
@@ -272,6 +293,7 @@ class _SettingContainerState extends State<SettingContainer> {
                         ));
                         break;
                     }
+                    _setAlarm(spKey, value);
                   }),
             )
           ],
@@ -315,14 +337,13 @@ class _SettingContainerState extends State<SettingContainer> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SettingBloc, SettingState>(
-      listener: (_, state) {
-        if (state is AlarmToggled) {
-          _loadPrefs();
-        } else if (state is NotificationToggled) {
-          _loadPrefs();
-        }
-      },
-      child: _buildBody(),
-    );
+        listener: (_, state) {
+          if (state is AlarmToggled) {
+            _loadPrefs();
+          } else if (state is NotificationToggled) {
+            _loadPrefs();
+          }
+        },
+        child: _buildBody());
   }
 }
