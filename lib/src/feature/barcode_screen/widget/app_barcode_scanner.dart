@@ -78,7 +78,7 @@ class _BarcodePermissionWidgetState extends State<_BarcodePermissionWidget> {
                   ? _BarcodeScannerWidget()
                   : _BarcodeInputWidget.defaultStyle(
                       changed: (String value) {
-                        _inputValue = value;
+                        // _inputValue = value;
                       },
                     )
               : Center(

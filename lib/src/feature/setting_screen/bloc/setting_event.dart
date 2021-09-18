@@ -1,10 +1,26 @@
 import 'package:equatable/equatable.dart';
 
-abstract class SettingEvent extends Equatable{}
+enum HorizonType { Morning, Noon, Afternoon, Sunset, Night }
 
-class SaveSettingEvent extends SettingEvent{
+enum ActionType { Enable, Disable }
+
+abstract class SettingEvent extends Equatable {}
+
+class ToggleAlarm extends SettingEvent {
+  HorizonType horizonType;
+
+  ToggleAlarm(this.horizonType);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [this.horizonType];
+}
 
+class ToggleNotification extends SettingEvent {
+  HorizonType horizonType;
+  ActionType actionType;
+
+  ToggleNotification(this.horizonType, this.actionType);
+
+  @override
+  List<Object?> get props => [this.horizonType, this.actionType];
 }

@@ -11,6 +11,12 @@ class FoodItem extends StatelessWidget {
     else return '';
   }
 
+  Color statusColor(){
+    if(food != null)
+    return food!.kind! ? Colors.green : Colors.red;
+    else return Colors.black;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -20,7 +26,7 @@ class FoodItem extends StatelessWidget {
           height: 15.0.rw,
           width: 15.0.rw,
           decoration: BoxDecoration(
-            image: DecorationImage(image: NetworkImage('https://static01.nyt.com/images/2021/02/17/dining/17tootired-grilled-cheese/17tootired-grilled-cheese-articleLarge.jpg?quality=75&auto=webp&disable=upscale',),fit: BoxFit.fill),
+            image: DecorationImage(image: NetworkImage('http://10.0.2.2:3000/${food?.image}',),fit: BoxFit.fill),
             color: Colors.greenAccent,
             shape: BoxShape.circle,
             boxShadow: [
@@ -36,7 +42,7 @@ class FoodItem extends StatelessWidget {
         title: Text(food?.name??'',style: TextStyle(fontSize: 4.0.rw,color: Colors.black),),
         subtitle: Text(food?.description??'',style: TextStyle(fontSize: 3.5.rw,color: Colors.grey),),
         onTap: (){},
-        trailing: Text(status(),style: TextStyle(color: Colors.greenAccent,fontSize: 3.5.rw),),
+        trailing: Text(status(),style: TextStyle(color: statusColor(),fontSize: 3.5.rw),),
       ),
     );
   }
