@@ -10,14 +10,14 @@ import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  String? screenName;
+  MainScreen(this.screenName,{Key? key}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String _screenName = 'home';
 
   @override
   void initState() {
@@ -113,13 +113,13 @@ class _MainScreenState extends State<MainScreen> {
   };
 
     return Scaffold(
-      body: screens[_screenName],
-      appBar: appbars[_screenName],
+      body: screens[widget.screenName],
+      appBar: appbars[widget.screenName],
       bottomNavigationBar: PBottomNavigation(
-        screenName: _screenName,
+        screenName: widget.screenName,
         change: (String scName) {
           setState(() {
-            _screenName = scName;
+            widget.screenName = scName;
           });
         },
       ),

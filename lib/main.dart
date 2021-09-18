@@ -1,6 +1,7 @@
 import 'dart:isolate';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:prayer_times_flutter/src/feature/food_list/food_list_screen.dart';
 import 'package:prayer_times_flutter/src/feature/main_screen/main_screen.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,9 +40,12 @@ class MyApp extends StatelessWidget {
           builder: (BuildContext context, Orientation orientation) {
             SizeConfig().init(constraints, orientation);
             return MaterialApp(
+                routes: {
+                  '/foods' : (context) => MainScreen('barcode')
+                },
                 debugShowCheckedModeBanner: false,
                 title: 'Prayer times flutter',
-                home: MainScreen());
+                home: MainScreen('home'));
           },
         );
       },

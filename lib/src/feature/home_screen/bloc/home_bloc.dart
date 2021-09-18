@@ -52,7 +52,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           gregorianDate: dates['gregorian'],
           hijriDate: dates['hijri']);
     } on SocketException catch (e) {
-      yield HomeGetDataError("Please check your network conn");
+      yield HomeGetDataError("Please check your network connection");
     } on FormatException catch (e) {
       yield HomeGetDataError("Prayer times server is down! please try again later");
     }
