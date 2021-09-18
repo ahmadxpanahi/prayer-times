@@ -43,6 +43,7 @@ dependencies:
   flutter_local_notifications: ^8.1.1+2
   device_info: ^2.0.0
   cupertino_icons: ^1.0.2
+  assets_audio_player: ^3.0.3+6
   flutter_native_timezone: ^2.0.0
 
 dev_dependencies:
@@ -60,7 +61,7 @@ flutter:
     - assets/images/halal.svg
     - assets/images/calendar.svg
     - assets/images/home.svg
-    - assets/audios/alarm.mp3
+    - assets/audios/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

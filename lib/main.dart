@@ -1,5 +1,6 @@
 import 'dart:isolate';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/feature/food_list/food_list_screen.dart';
 import 'package:prayer_times_flutter/src/feature/main_screen/main_screen.dart';
@@ -16,9 +17,20 @@ Future<void> main() async {
   await _configureLocalTimeZone();
   await NotificationService().init();
 
-  await AndroidAlarmManager.initialize();
-  
+  await AndroidAlarmManager.initialize();  
+
   runApp(MyApp());
+
+  await AndroidAlarmManager.periodic(Duration(minutes: 1), 2, () async {
+    print("it woooorked");
+    final assetsAudioPlayer = AssetsAudioPlayer();
+
+    await assetsAudioPlayer.open(
+      Audio("assets/audios/alarm.mp3"),
+    );
+
+    print("but not audio?!");
+  });
 }
 
 Future<void> _configureLocalTimeZone() async {
@@ -31,7 +43,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero,()async{
+    Future.delayed(Duration.zero, () async {
       SharedPreferences sp = await SharedPreferences.getInstance();
     });
     return LayoutBuilder(
