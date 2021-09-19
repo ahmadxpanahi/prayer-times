@@ -27,7 +27,7 @@ class BarcodeBloc extends Bloc<BarcodeEvent,BarcodeState> {
     yield BarcodeLoadingState();
 
     try{
-      var url = Uri.parse('http://192.168.1.11:3000/foods');
+      var url = Uri.parse('https://prayer-times-6.herokuapp.com/foods');
       var response = await http.get(url);
       List foods = json.decode(response.body)['data'];
       List<Food> foodList = foods.map((e) => 
