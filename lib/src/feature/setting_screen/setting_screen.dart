@@ -36,17 +36,12 @@ class _SettingContainerState extends State<SettingContainer> {
   bool? reminderActivator;
   SharedPreferences? sp;
   late SettingBloc _settingBloc;
-  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
-
-  NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: AndroidNotificationDetails(
-          'channelId', 'channelName', 'channelDescription'));
+ 
 
   @override
   void initState() {
     super.initState();
 
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     _loadPrefs();

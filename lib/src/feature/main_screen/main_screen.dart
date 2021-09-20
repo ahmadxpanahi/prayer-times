@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/barcode_screen.dart';
-import 'package:prayer_times_flutter/src/feature/calendar/calendar_screen.dart';
-import 'package:prayer_times_flutter/src/feature/food_list/food_list_screen.dart';
+import 'package:prayer_times_flutter/src/feature/calendar_screen/calendar_screen.dart';
+import 'package:prayer_times_flutter/src/feature/food_list_screen/food_list_screen.dart';
 import 'package:prayer_times_flutter/src/feature/home_screen/home_screen.dart';
 import 'package:prayer_times_flutter/src/feature/main_screen/widget/bottom_nav.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/setting_screen.dart';

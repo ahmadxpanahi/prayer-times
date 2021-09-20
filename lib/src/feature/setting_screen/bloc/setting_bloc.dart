@@ -59,6 +59,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
         break;
     }
 
+    
     yield AlarmToggled();
   }
 
