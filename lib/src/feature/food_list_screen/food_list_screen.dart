@@ -5,7 +5,7 @@ import 'package:prayer_times_flutter/src/feature/barcode_screen/barcode_screen.d
 import 'package:prayer_times_flutter/src/feature/barcode_screen/bloc/barcode_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/bloc/barcode_event.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/bloc/barcode_state.dart';
-import 'package:prayer_times_flutter/src/feature/food_list/widget/food_item.dart';
+import 'package:prayer_times_flutter/src/feature/food_list_screen/widget/food_item.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/food.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
@@ -38,7 +38,6 @@ class _FoodListContainerState extends State<FoodListContainer> {
     super.initState();
     _barcodeBloc = BlocProvider.of<BarcodeBloc>(context);
     _barcodeBloc.add(GetBarcodeData());
-    
   }
 
   Widget _buildBody() => Stack(
@@ -94,7 +93,6 @@ class _FoodListContainerState extends State<FoodListContainer> {
           );
         } else if (state is GetBarcodeDataSuccess) {
           foodList = state.foods;
-          print(foodList?[0].image);
           return _buildBody();
         } else if(state is BarcodeErrorState){
           return Center(child: Text(state.error??''),);

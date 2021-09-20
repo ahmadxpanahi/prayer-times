@@ -8,11 +8,11 @@ abstract class SettingEvent extends Equatable {}
 
 class ToggleAlarm extends SettingEvent {
   HorizonType horizonType;
-
-  ToggleAlarm(this.horizonType);
+  ActionType actionType;
+  ToggleAlarm(this.horizonType,this.actionType);
 
   @override
-  List<Object?> get props => [this.horizonType];
+  List<Object?> get props => [this.horizonType,this.actionType];
 }
 
 class ToggleNotification extends SettingEvent {

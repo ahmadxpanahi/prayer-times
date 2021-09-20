@@ -1,19 +1,15 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_state.dart';
-import 'package:prayer_times_flutter/src/ui/flushbar.dart';
-import 'package:prayer_times_flutter/src/utils/alarm.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timezone/timezone.dart' as tz;
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -54,25 +50,6 @@ class _SettingContainerState extends State<SettingContainer> {
 
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     _loadPrefs();
-  }
-
-  void _setAlarm(spKey, value) {
-    setState(() {
-      sp?.setBool(spKey, value);
-      var v = sp?.getBool(spKey);
-      print(v);
-      if (v!) {
-        DateTime now = DateTime.now();
-        String nowString =
-            '${now.year}-${now.month.timePadded}-${now.day.timePadded}';
-        String? prayerTime = sp?.getString('${spKey}Time') ?? '00:00';
-        DateTime time = DateTime.parse('$nowString $prayerTime:00');
-        print(time);
-        Future.delayed(Duration.zero, () async {
-          await AndroidAlarmManager.periodic(Duration(milliseconds: 1500), 2, playAlarm);
-        });
-      }
-    });
   }
 
   void _loadPrefs() {
@@ -248,19 +225,24 @@ class _SettingContainerState extends State<SettingContainer> {
                     print('Switch changed to -> $value');
                     switch (spKey) {
                       case PreferencesManager.MORNING_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Morning));
+                        _settingBloc.add(ToggleAlarm(HorizonType.Morning,
+                        value ? ActionType.Enable : ActionType.Disable,));
                         break;
                       case PreferencesManager.NOON_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Noon));
+                        _settingBloc.add(ToggleAlarm(HorizonType.Noon,
+                        value ? ActionType.Enable : ActionType.Disable,));
                         break;
                       case PreferencesManager.AFTERNOON_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Afternoon));
+                        _settingBloc.add(ToggleAlarm(HorizonType.Afternoon,
+                        value ? ActionType.Enable : ActionType.Disable,));
                         break;
                       case PreferencesManager.SUNSET_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Sunset));
+                        _settingBloc.add(ToggleAlarm(HorizonType.Sunset,
+                        value ? ActionType.Enable : ActionType.Disable,));
                         break;
                       case PreferencesManager.NIGHT_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Night));
+                        _settingBloc.add(ToggleAlarm(HorizonType.Night,
+                        value ? ActionType.Enable : ActionType.Disable,));
                         break;
                       case PreferencesManager.MORNING_NOTIFICATION:
                         _settingBloc.add(ToggleNotification(
@@ -293,7 +275,7 @@ class _SettingContainerState extends State<SettingContainer> {
                         ));
                         break;
                     }
-                    _setAlarm(spKey, value);
+                    // _setAlarm(spKey, value);
                   }),
             )
           ],
