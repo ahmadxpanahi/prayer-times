@@ -36,12 +36,10 @@ class _SettingContainerState extends State<SettingContainer> {
   bool? reminderActivator;
   SharedPreferences? sp;
   late SettingBloc _settingBloc;
- 
 
   @override
   void initState() {
     super.initState();
-
 
     _settingBloc = BlocProvider.of<SettingBloc>(context);
     _loadPrefs();
@@ -220,24 +218,34 @@ class _SettingContainerState extends State<SettingContainer> {
                     print('Switch changed to -> $value');
                     switch (spKey) {
                       case PreferencesManager.MORNING_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Morning,
-                        value ? ActionType.Enable : ActionType.Disable,));
+                        _settingBloc.add(ToggleAlarm(
+                          HorizonType.Morning,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
                         break;
                       case PreferencesManager.NOON_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Noon,
-                        value ? ActionType.Enable : ActionType.Disable,));
+                        _settingBloc.add(ToggleAlarm(
+                          HorizonType.Noon,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
                         break;
                       case PreferencesManager.AFTERNOON_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Afternoon,
-                        value ? ActionType.Enable : ActionType.Disable,));
+                        _settingBloc.add(ToggleAlarm(
+                          HorizonType.Afternoon,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
                         break;
                       case PreferencesManager.SUNSET_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Sunset,
-                        value ? ActionType.Enable : ActionType.Disable,));
+                        _settingBloc.add(ToggleAlarm(
+                          HorizonType.Sunset,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
                         break;
                       case PreferencesManager.NIGHT_ALARM:
-                        _settingBloc.add(ToggleAlarm(HorizonType.Night,
-                        value ? ActionType.Enable : ActionType.Disable,));
+                        _settingBloc.add(ToggleAlarm(
+                          HorizonType.Night,
+                          value ? ActionType.Enable : ActionType.Disable,
+                        ));
                         break;
                       case PreferencesManager.MORNING_NOTIFICATION:
                         _settingBloc.add(ToggleNotification(
@@ -257,7 +265,7 @@ class _SettingContainerState extends State<SettingContainer> {
                           value ? ActionType.Enable : ActionType.Disable,
                         ));
                         break;
-                      case PreferencesManager.SUNSET_ALARM:
+                      case PreferencesManager.SUNSET_NOTIFICATION:
                         _settingBloc.add(ToggleNotification(
                           HorizonType.Sunset,
                           value ? ActionType.Enable : ActionType.Disable,

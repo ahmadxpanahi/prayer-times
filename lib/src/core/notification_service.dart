@@ -7,6 +7,12 @@ class NotificationService {
   static const int SUNSET_NOTIFICATION_ID = 4;
   static const int NIGHT_NOTIFICATION_ID = 5;
 
+  static const int MORNING_ALARM_ID = 6;
+  static const int NOON_ALARM_ID = 7;
+  static const int AFTERNOON_ALARM_ID = 8;
+  static const int SUNSET_ALARM_ID = 9;
+  static const int NIGHT_ALARM_ID = 10;
+
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 

@@ -38,10 +38,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       Map info = json.decode(response.body)['results']['location'];
       Map dates = json.decode(response.body)['results']['datetime'][0]['date'];
 
+      print(json.decode(response.body)['results']);
+
       await _savePrayerTimes(times);
 
       yield HomeGetDataSuccess(
-          morningPrayer: '19:20',
+          morningPrayer: times['Imsak'],
           sunrisePrayer: times['Sunrise'],
           noonPrayer: times['Dhuhr'],
           afternoonPrayer: times['Asr'],
@@ -59,7 +61,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _savePrayerTimes(Map times) async {
-    await sp?.setString(PreferencesManager.MORNING_PRAYER_TIME, '19:20');
+    await sp?.setString(PreferencesManager.MORNING_PRAYER_TIME, times['Imsak']);
     await sp?.setString(PreferencesManager.NOON_PRAYER_TIME, times['Dhuhr']);
     await sp?.setString(PreferencesManager.AFTERNOON_PRAYER_TIME, times['Asr']);
     await sp?.setString(
