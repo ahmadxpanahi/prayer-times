@@ -45,7 +45,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   assets_audio_player: ^3.0.3+6
   flutter_native_timezone: ^2.0.0
-
+  group_radio_button: ^1.1.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

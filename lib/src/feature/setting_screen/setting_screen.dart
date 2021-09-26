@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:group_radio_button/group_radio_button.dart';
 import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
@@ -10,6 +11,7 @@ import 'package:prayer_times_flutter/src/ui/colors.dart';
 import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:group_radio_button/group_radio_button.dart';
 
 class SettingScreen extends StatelessWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -36,6 +38,7 @@ class _SettingContainerState extends State<SettingContainer> {
   bool? reminderActivator;
   SharedPreferences? sp;
   late SettingBloc _settingBloc;
+  String? _singleValue;
 
   @override
   void initState() {
@@ -48,8 +51,8 @@ class _SettingContainerState extends State<SettingContainer> {
   void _loadPrefs() {
     Future.delayed(Duration(milliseconds: 100), () async {
       sp = await SharedPreferences.getInstance();
-
       setState(() {
+        _singleValue = sp?.getString(PreferencesManager.LANGUAGE);
         morningAzan = sp?.getBool(PreferencesManager.MORNING_ALARM) ?? false;
         noonAzan = sp?.getBool(PreferencesManager.NOON_ALARM) ?? false;
         afternoonAzan =
@@ -179,6 +182,56 @@ class _SettingContainerState extends State<SettingContainer> {
             ],
           ),
         ],
+      );
+
+  Widget _changeLanguageContainer() => Container(
+      padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
+      margin: EdgeInsets.only(bottom: 4.0.rh),
+      color: Colors.white,
+      child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              RadioButton(
+                description: "English",
+                value: "English",
+                activeColor: PColors.primary,
+                groupValue: _singleValue,
+                onChanged: (_) async {
+                  setState(() {
+                    _singleValue = 'English';
+                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                  });
+                }
+              ),
+              RadioButton(
+                description: "Greek",
+                value: "Greek",
+                activeColor: PColors.primary,
+                groupValue: _singleValue,
+                onChanged: (_)async {
+                  setState(() {
+                    _singleValue = 'Greek';
+                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                  });
+                }
+              ),
+              RadioButton(
+                description: "Turkish",
+                value: "Turkish",
+                activeColor: PColors.primary,
+                groupValue: _singleValue,
+                onChanged: (_)async {
+                  setState(() {
+                    _singleValue = 'Turkish';
+                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                  });
+                }
+              ),
+              SizedBox(
+                height: 4.0.rh,
+              ),
+            ],
+          ),
       );
 
   Widget _settingItem(title, subTitle, spKey) => Padding(
@@ -314,7 +367,21 @@ class _SettingContainerState extends State<SettingContainer> {
                 ),
               ),
             ),
-            _bottomContainer()
+            _bottomContainer(),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 2.0.rh),
+              child: GestureDetector(
+                onTap: () async {},
+                child: Text(
+                  'Language',
+                  style: TextStyle(
+                      fontSize:
+                          SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
+                      color: Colors.grey),
+                ),
+              ),
+            ),
+            _changeLanguageContainer()
           ],
         ),
       );

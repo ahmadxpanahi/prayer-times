@@ -1,4 +1,7 @@
 class PreferencesManager {
+
+  static const String LANGUAGE = "language";
+
   static const String MORNING_ALARM = "_morningAlarmKey";
   static const String NOON_ALARM = "_noonAlarmKey";
   static const String AFTERNOON_ALARM = "_afterNoonAlarmKey";

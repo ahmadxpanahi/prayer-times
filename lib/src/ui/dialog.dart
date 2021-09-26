@@ -19,5 +19,6 @@ void pShowDialog(context, _currentFood, content) {
                         return PColors.primary ?? Colors.green;
                       }),
                     ))
-              ]));
+              ])
+              );
 }
