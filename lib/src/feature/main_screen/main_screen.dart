@@ -11,6 +11,7 @@ import 'package:prayer_times_flutter/src/utils/size_config.dart';
 import 'package:prayer_times_flutter/src/utils/extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:i18n_extension/i18n_extension.dart';
 
 class MainScreen extends StatefulWidget {
   String? screenName;
@@ -23,6 +24,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   SharedPreferences? ps;
   String _singleValue = "Greek";
+  
   @override
   void initState() {
     super.initState();
@@ -52,7 +54,7 @@ class _MainScreenState extends State<MainScreen> {
           color: PColors.primary,
           height: 13.3.rh,
           child: Text(
-            'Home Page',
+            'Home Page'.i18n,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
           ),
@@ -70,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  'Halal product scanning',
+                  'Halal product scanning'.i18n,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
                 ),
@@ -86,7 +88,7 @@ class _MainScreenState extends State<MainScreen> {
           color: PColors.primary,
           height: 13.3.rh,
           child: Text(
-            'Setting',
+            'Setting'.i18n,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
           ),
@@ -101,7 +103,7 @@ class _MainScreenState extends State<MainScreen> {
           color: PColors.primary,
           height: 13.3.rh,
           child: Text(
-            'Religious days',
+            'Religious days'.i18n,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 2.73.rt, color: Colors.white),
           ),

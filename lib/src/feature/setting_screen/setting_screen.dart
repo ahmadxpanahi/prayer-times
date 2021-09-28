@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_bloc.dart';
 import 'package:prayer_times_flutter/src/feature/setting_screen/bloc/setting_event.dart';
@@ -78,28 +79,28 @@ class _SettingContainerState extends State<SettingContainer> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _settingItem(
-              'Morning azan',
-              'everyday',
+              'Morning azan'.i18n,
+              'everyday'.i18n,
               PreferencesManager.MORNING_ALARM,
             ),
             _settingItem(
-              'Noon azan',
-              'everyday',
+              'Noon azan'.i18n,
+              'everyday'.i18n,
               PreferencesManager.NOON_ALARM,
             ),
             _settingItem(
-              'Afternoon azan',
-              'everyday',
+              'Afternoon azan'.i18n,
+              'everyday'.i18n,
               PreferencesManager.AFTERNOON_ALARM,
             ),
             _settingItem(
-              'Evening azan',
-              'everyday',
+              'Evening azan'.i18n,
+              'everyday'.i18n,
               PreferencesManager.SUNSET_ALARM,
             ),
             _settingItem(
-              'Night azan',
-              'everyday',
+              'Night azan'.i18n,
+              'everyday'.i18n,
               PreferencesManager.NIGHT_ALARM,
             ),
           ],
@@ -113,28 +114,28 @@ class _SettingContainerState extends State<SettingContainer> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _settingItem(
-            'Reminder of Morning prayer',
-            'everyday',
+            'Reminder of Morning prayer'.i18n,
+            'everyday'.i18n,
             PreferencesManager.MORNING_NOTIFICATION,
           ),
           _settingItem(
-            'Reminder of Noon prayer',
-            'everyday',
+            'Reminder of Noon prayer'.i18n,
+            'everyday'.i18n,
             PreferencesManager.NOON_NOTIFICATION,
           ),
           _settingItem(
-            'Reminder of Afternoon prayer',
-            'everyday',
+            'Reminder of Afternoon prayer'.i18n,
+            'everyday'.i18n,
             PreferencesManager.AFTERNOON_NOTIFICATION,
           ),
           _settingItem(
-            'Reminder of Sunset prayer',
-            'everyday',
+            'Reminder of Sunset prayer'.i18n,
+            'everyday'.i18n,
             PreferencesManager.SUNSET_NOTIFICATION,
           ),
           _settingItem(
-            'Reminder of Night prayer',
-            'everyday',
+            'Reminder of Night prayer'.i18n,
+            'everyday'.i18n,
             PreferencesManager.NIGHT_NOTIFICATION,
           ),
           // Divider(
@@ -185,13 +186,13 @@ class _SettingContainerState extends State<SettingContainer> {
       );
 
   Widget _changeLanguageContainer() => Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
-      margin: EdgeInsets.only(bottom: 4.0.rh),
-      color: Colors.white,
-      child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              RadioButton(
+        padding: EdgeInsets.symmetric(horizontal: 2.2.rw),
+        margin: EdgeInsets.only(bottom: 4.0.rh),
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            RadioButton(
                 description: "English",
                 value: "English",
                 activeColor: PColors.primary,
@@ -200,38 +201,38 @@ class _SettingContainerState extends State<SettingContainer> {
                   setState(() {
                     _singleValue = 'English';
                     sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                    I18n.of(context).locale = Locale('en', "us");
                   });
-                }
-              ),
-              RadioButton(
+                }),
+            RadioButton(
                 description: "Greek",
                 value: "Greek",
                 activeColor: PColors.primary,
                 groupValue: _singleValue,
-                onChanged: (_)async {
+                onChanged: (_) async {
                   setState(() {
                     _singleValue = 'Greek';
                     sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                    I18n.of(context).locale = Locale('el','gr');
                   });
-                }
-              ),
-              RadioButton(
+                }),
+            RadioButton(
                 description: "Turkish",
                 value: "Turkish",
                 activeColor: PColors.primary,
                 groupValue: _singleValue,
-                onChanged: (_)async {
+                onChanged: (_) async {
                   setState(() {
                     _singleValue = 'Turkish';
                     sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                    I18n.of(context).locale = Locale('tr', "tu");
                   });
-                }
-              ),
-              SizedBox(
-                height: 4.0.rh,
-              ),
-            ],
-          ),
+                }),
+            SizedBox(
+              height: 4.0.rh,
+            ),
+          ],
+        ),
       );
 
   Widget _settingItem(title, subTitle, spKey) => Padding(
@@ -346,7 +347,7 @@ class _SettingContainerState extends State<SettingContainer> {
             Padding(
               padding: EdgeInsets.symmetric(vertical: 2.0.rh),
               child: Text(
-                'Azan',
+                'Azan'.i18n,
                 style: TextStyle(
                     fontSize:
                         SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
@@ -359,7 +360,7 @@ class _SettingContainerState extends State<SettingContainer> {
               child: GestureDetector(
                 onTap: () async {},
                 child: Text(
-                  'Reminders',
+                  'Reminders'.i18n,
                   style: TextStyle(
                       fontSize:
                           SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,
@@ -373,7 +374,7 @@ class _SettingContainerState extends State<SettingContainer> {
               child: GestureDetector(
                 onTap: () async {},
                 child: Text(
-                  'Language',
+                  'Language'.i18n,
                   style: TextStyle(
                       fontSize:
                           SizeConfig.heightMultiplier! > 6 ? 4.3.rw : 3.3.rw,

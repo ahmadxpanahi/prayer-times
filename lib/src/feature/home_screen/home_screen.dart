@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,12 +56,12 @@ class _HomeContainerState extends State<HomeContainer> {
   Widget _itemsList(morning, sunrise, noon, afternoon, evening, night) =>
       Column(
         children: [
-          _item('Morning', morning, hStatus == 0 ? true : false),
-          _item('Sunrise', sunrise, hStatus == 1 ? true : false),
-          _item('Noon', noon, hStatus == 2 ? true : false),
-          _item('Afternoon', afternoon, hStatus == 3 ? true : false),
-          _item('Evening', evening, hStatus == 4 ? true : false),
-          _item('Night', night, hStatus == 5 ? true : false),
+          _item('Morning'.i18n, morning, hStatus == 0 ? true : false),
+          _item('Sunrise'.i18n, sunrise, hStatus == 1 ? true : false),
+          _item('Noon'.i18n, noon, hStatus == 2 ? true : false),
+          _item('Afternoon'.i18n, afternoon, hStatus == 3 ? true : false),
+          _item('Evening'.i18n, evening, hStatus == 4 ? true : false),
+          _item('Night'.i18n, night, hStatus == 5 ? true : false),
         ],
       );
 
@@ -130,7 +132,7 @@ class _HomeContainerState extends State<HomeContainer> {
                     ),
                   ),
                   Text(
-                    'saat ${DateTime.now().hour.timePadded}:${DateTime.now().minute.timePadded}:${DateTime.now().second.timePadded}',
+                    '${'time'.i18n} ${DateTime.now().hour.timePadded}:${DateTime.now().minute.timePadded}:${DateTime.now().second.timePadded}',
                     style: TextStyle(
                       fontSize: 4.0.rw,
                       color: Colors.black,
@@ -155,7 +157,8 @@ class _HomeContainerState extends State<HomeContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  'Now it\'s ${hourStatusName(hStatus)} time',
+                  'Now it\'s ${hourStatusName(hStatus)} time'.i18n,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 6.6.rw,
                       color: Colors.black,
@@ -167,7 +170,7 @@ class _HomeContainerState extends State<HomeContainer> {
                 ),
                 _itemsList(morning, sunrise, noon, afternoon, evening, night),
                 Text(
-                  hourStatusName(hStatus == 5 ? 0 : hStatus! + 1),
+                  '${hourStatusName(hStatus == 5 ? 0 : hStatus! + 1)}'.i18n,
                   style: TextStyle(
                     fontSize: 4.3.rw,
                     color: Colors.black,
@@ -191,7 +194,7 @@ class _HomeContainerState extends State<HomeContainer> {
         child: Center(
           child: Container(
             padding: EdgeInsets.all(3.0.rw),
-            margin: EdgeInsets.symmetric(vertical: 5.5.rh),
+            margin: EdgeInsets.symmetric(vertical: 3.0.rh),
             color: Colors.white,
             child: Column(
               children: [
@@ -200,7 +203,7 @@ class _HomeContainerState extends State<HomeContainer> {
                   height: 1.2.rh,
                 ),
                 _bottomContainer(
-                    morning, sunrise, noon, afternoon, evening, night)
+                    morning, sunrise, noon, afternoon, evening, night),
               ],
             ),
           ),
