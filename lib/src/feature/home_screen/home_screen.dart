@@ -99,54 +99,62 @@ class _HomeContainerState extends State<HomeContainer> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    countryName ?? '',
-                    style: TextStyle(fontSize: 4.5.rw, color: Colors.black),
-                  ),
-                  Text(
-                    cityName ?? '',
-                    style: TextStyle(
-                        fontSize: 6.8.rw,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      countryName ?? '',
+                      style: TextStyle(fontSize: 4.5.rw, color: Colors.black),
+                    ),
+                    Flexible(
+                      child: Text(
+                          cityName ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: cityName.toString().length > 15 ? 4.8.rw : 5.8.rw,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold),
+                        ),
+                    ),
+                  ],
+                ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${DateTime.now().day} ${GregorianMonth.monthName[DateTime.now().month]} ${DateTime.now().year}',
-                    style: TextStyle(fontSize: 4.0.rw, color: Colors.black),
-                  ),
-                  Text(
-                    '${hijriDate.hDay} ${hijriDate.longMonthName} ${hijriDate.hYear}',
-                    style: TextStyle(
-                      fontSize: 4.0.rw,
-                      color: Colors.black,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${DateTime.now().day} ${GregorianMonth.monthName[DateTime.now().month]} ${DateTime.now().year}',
+                      style: TextStyle(fontSize: 4.0.rw, color: Colors.black),
                     ),
-                  ),
-                  Text(
-                    '${'time'.i18n} ${DateTime.now().hour.timePadded}:${DateTime.now().minute.timePadded}:${DateTime.now().second.timePadded}',
-                    style: TextStyle(
-                      fontSize: 4.0.rw,
-                      color: Colors.black,
+                    Text(
+                      '${hijriDate.hDay} ${hijriDate.longMonthName} ${hijriDate.hYear}',
+                      style: TextStyle(
+                        fontSize: 4.0.rw,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                ],
+                    Text(
+                      '${'time'.i18n} ${DateTime.now().hour.timePadded}:${DateTime.now().minute.timePadded}:${DateTime.now().second.timePadded}',
+                      style: TextStyle(
+                        fontSize: 4.0.rw,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
       );
 
-  Widget _bottomContainer(morning, sunrise, noon, afternoon, evening, night) =>
-      Expanded(
+  Widget _bottomContainer(morning, sunrise, noon, afternoon, evening, night) {
+      var hourStatus = hStatus != null ? 'Now it\'s ${hourStatusName(hStatus)} time'.i18n : '';
+      return Expanded(
           flex: 7,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 6.3.rw),
@@ -157,7 +165,7 @@ class _HomeContainerState extends State<HomeContainer> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  'Now it\'s ${hourStatusName(hStatus)} time'.i18n,
+                  hourStatus,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 6.6.rw,
@@ -186,6 +194,7 @@ class _HomeContainerState extends State<HomeContainer> {
               ],
             ),
           ));
+  }
 
   Widget _buildBody(morning, sunrise, noon, afternoon, evening, night,
           countryName, cityName) =>

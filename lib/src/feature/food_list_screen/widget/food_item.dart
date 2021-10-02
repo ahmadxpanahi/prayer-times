@@ -20,6 +20,7 @@ class FoodItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var imageUrl = food != null ? '${PUrl.baseUrl}${food?.image}' : 'https://ak.picdn.net/shutterstock/videos/28831216/thumb/1.jpg';
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.1.rh),
       child: ListTile(
@@ -27,7 +28,7 @@ class FoodItem extends StatelessWidget {
           height: 15.0.rw,
           width: 15.0.rw,
           decoration: BoxDecoration(
-            image: DecorationImage(image: NetworkImage('${PUrl.baseUrl}${food?.image}'),fit: BoxFit.fill),
+            image: DecorationImage(image: NetworkImage(imageUrl),fit: BoxFit.fill),
             color: Colors.greenAccent,
             shape: BoxShape.circle,
             boxShadow: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
 import 'package:prayer_times_flutter/src/feature/main_screen/main_screen.dart';
 import 'package:prayer_times_flutter/src/ui/colors.dart';
@@ -48,6 +49,8 @@ class _LanguageState extends State<Language> {
                 onChanged: (_)async {
                   setState(() {
                     _singleValue = 'English';
+                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                    I18n.of(context).locale = Locale('en', "us");
                   });
                 }
               ),
@@ -59,6 +62,8 @@ class _LanguageState extends State<Language> {
                 onChanged: (_)async {
                   setState(() {
                     _singleValue = 'Greek';
+                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                    I18n.of(context).locale = Locale('el', "gr");
                   });
                 }
               ),
@@ -70,6 +75,8 @@ class _LanguageState extends State<Language> {
                 onChanged: (_)async {
                   setState(() {
                     _singleValue = 'Turkish';
+                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
+                    I18n.of(context).locale = Locale('tr', "tu");
                   });
                 }
               ),

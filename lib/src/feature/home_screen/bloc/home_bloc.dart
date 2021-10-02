@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:prayer_times_flutter/src/core/preferences_manager.dart';
 import 'package:prayer_times_flutter/src/feature/home_screen/bloc/home_event.dart';
 import 'package:prayer_times_flutter/src/feature/home_screen/bloc/home_state.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   SharedPreferences? sp;
@@ -28,10 +30,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Stream<HomeState> _getHomeData() async* {
     yield HomeLoadingState();
-
+    
     try {
+
+      final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+      final position = await _geolocatorPlatform.getCurrentPosition();
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+      var cityName = placemarks[0].street;
+      var countryName = placemarks[0].country;
+
       var url =
-          Uri.parse('https://api.pray.zone/v2/times/today.json?city=athens');
+          Uri.parse('https://api.pray.zone/v2/times/today.json?longitude=${position.longitude}&latitude=${position.latitude}&elevation=333');
       var response = await http.get(url);
 
       Map times = json.decode(response.body)['results']['datetime'][0]['times'];
@@ -43,20 +55,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       await _savePrayerTimes(times);
 
       yield HomeGetDataSuccess(
-          morningPrayer: times['Imsak'],
-          sunrisePrayer: times['Sunrise'],
-          noonPrayer: times['Dhuhr'],
-          afternoonPrayer: times['Asr'],
-          eveningPrayer: times['Maghrib'],
-          nightPrayer: times['Isha'],
-          cityName: info['city'],
-          countryName: info['country'],
+          morningPrayer: times['Imsak'] == '-' ? '00:00' : times['Imsak'],
+          sunrisePrayer: times['Sunrise'] == '-' ? '00:00' : times['Sunrise'],
+          noonPrayer: times['Dhuhr'] == '-' ? '00:00' : times['Dhuhr'],
+          afternoonPrayer: times['Asr'] == '-' ? '00:00' : times['Asr'],
+          eveningPrayer: times['Maghrib'] == '-' ? '00:00' : times['Maghrib'],
+          nightPrayer: times['Isha'] == '-' ? '00:00' : times['Isha'],
+          cityName: cityName,
+          countryName: countryName,
           gregorianDate: dates['gregorian'],
           hijriDate: dates['hijri']);
     } on SocketException catch (e) {
       yield HomeGetDataError("Please check your network connection");
     } on FormatException catch (e) {
       yield HomeGetDataError("Prayer times server is down! please try again later");
+    } on Exception catch(e){
+      yield HomeGetDataError(e.toString());
     }
   }
 
