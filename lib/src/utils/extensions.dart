@@ -31,7 +31,7 @@ static var t = Translations("en_us") +
    {
      'en_us' : 'Home Page',
      'tr_tu' : 'ana sayfa',
-     'el_gr' : 'αρχική σελίδα'
+     'el_gr' : 'Αρχική Σελίδα'
    }+{
      'en_us' : 'Halal product scanning',
      'tr_tu' : 'Helal ürün taraması',
@@ -39,118 +39,118 @@ static var t = Translations("en_us") +
    }+{
      'en_us' : 'Setting',
      'tr_tu' : 'Ayar',
-     'el_gr' : 'Σύνθεση'
+     'el_gr' : 'Αρχική Σελίδα'
    }+{
      'en_us' : 'Religious days',
-     'tr_tu' : 'dini günler',
-     'el_gr' : 'Θρησκευτικές ημέρες'
+     'tr_tu' : 'Dini Günler/Geceler',
+     'el_gr' : 'Ιερές Ημέρες/Νύχτες'
    }+{
      'en_us' : 'time',
-     'tr_tu' : 'saat',
-     'el_gr' : 'χρόνος'
+     'tr_tu' : 'Vakit',
+     'el_gr' : 'Ωρα'
    }+{
      'en_us' : 'Now it\'s Morning time',
-     'tr_tu' : 'şimdi sabah vakti',
-     'el_gr' : 'τώρα είναι πρωινή ώρα'
+     'tr_tu' : 'İmsak vakti',
+     'el_gr' : 'Ωρα Εναρξης Νηστείας'
    }+{
      'en_us' : 'Now it\'s Sunrise time',
-     'tr_tu' : 'şimdi Gündoğumu zamanı',
-     'el_gr' : 'τώρα είναι η ώρα της Ανατολής'
+     'tr_tu' : 'Güneş Vakti',
+     'el_gr' : 'Ανατολή Του Ηλίου'
    }+{
      'en_us' : 'Now it\'s Noon time',
-     'tr_tu' : 'şimdi öğle vakti',
-     'el_gr' : 'τώρα είναι ώρα Μεσημέρι'
+     'tr_tu' : 'Öğle Vakti',
+     'el_gr' : 'Μεσημεριανή Ωρα'
    }+{
      'en_us' : 'Now it\'s Afternoon time',
-     'tr_tu' : 'şimdi öğleden sonra zamanı',
-     'el_gr' : 'τωρα ειναι απογευματινη ωρα'
+     'tr_tu' : 'İkindi Vakti',
+     'el_gr' : 'Απογευματινή Ωρα'
    }+{
      'en_us' : 'Now it\'s Evening time',
-     'tr_tu' : 'şimdi akşam vakti',
-     'el_gr' : 'τώρα είναι ώρα Βράδυ'
+     'tr_tu' : 'Akşam Vakti',
+     'el_gr' : 'Βραδυνή Ωρα'
    }+{
      'en_us' : 'Now it\'s Night time',
-     'tr_tu' : 'şimdi gece vakti',
-     'el_gr' : 'τώρα είναι νύχτα'
+     'tr_tu' : 'Yatsı Vakti',
+     'el_gr' : 'Νυχτερινή Ωρα'
    }+{
      'en_us' : 'Morning',
-     'tr_tu' : 'sabah',
-     'el_gr' : 'πρωί'
+     'tr_tu' : 'İmsak',
+     'el_gr' : 'Ωρα Εναρξης Νηστείας'
    }+{
      'en_us' : 'Sunrise',
-     'tr_tu' : 'gündoğumu',
-     'el_gr' : 'Ανατολή ηλίου'
+     'tr_tu' : 'Güneş',
+     'el_gr' : 'Ανατολή Του Ηλίου'
    }+{
      'en_us' : 'Noon',
-     'tr_tu' : 'Öğle vakti',
-     'el_gr' : 'Μεσημέρι'
+     'tr_tu' : 'Öğle',
+     'el_gr' : 'Μεσημεριανή Ωρα'
    }+{
      'en_us' : 'Afternoon',
-     'tr_tu' : 'Öğleden sonra',
-     'el_gr' : 'Απόγευμα'
+     'tr_tu' : 'İkindi',
+     'el_gr' : 'Απογευματινή Ωρα'
    }+{
      'en_us' : 'Evening',
      'tr_tu' : 'Akşam',
-     'el_gr' : 'Απόγευμα'
+     'el_gr' : 'Βραδυνή Ωρα'
    }+{
      'en_us' : 'Night',
-     'tr_tu' : 'Gece',
-     'el_gr' : 'Νύχτα'
+     'tr_tu' : 'Yatsı',
+     'el_gr' : 'Νυχτερινή Ωρα'
    }+{
      'en_us' : 'Morning azan',
-     'tr_tu' : 'Sabah ezanı',
-     'el_gr' : 'Πρωινό αζάν'
+     'tr_tu' : 'Sabah Ezanı',
+     'el_gr' : 'Κάλεσμα  Fajr'
    }+{
      'en_us' : 'Noon azan',
-     'tr_tu' : 'öğle ezanı',
-     'el_gr' : 'Μεσημέρι αζάν'
+     'tr_tu' : 'Öğle Ezanı',
+     'el_gr' : 'Κάλεσμα Duhr'
    }+{
      'en_us' : 'Afternoon azan',
-     'tr_tu' : 'ikindi ezan',
-     'el_gr' : 'Απογευματινό αζάν'
+     'tr_tu' : 'İkindi Ezanı',
+     'el_gr' : 'Κάλεσμα Asr'
    }+{
      'en_us' : 'Evening azan',
-     'tr_tu' : 'Akşam ezanı',
-     'el_gr' : 'Βραδινό αζάν'
+     'tr_tu' : 'Akşam Ezanı',
+     'el_gr' : 'Κάλεσμα Maghrib'
    }+{
      'en_us' : 'Night azan',
-     'tr_tu' : 'gece ezanı',
-     'el_gr' : 'Νυχτερινό αζάν'
+     'tr_tu' : 'Yatsı Ezanı',
+     'el_gr' : 'Κάλεσμα Isha'
    }+{
      'en_us' : 'everyday',
      'tr_tu' : 'Her gün',
-     'el_gr' : 'κάθε μέρα'
+     'el_gr' : 'Κάθε ημέρα'
    }+{
      'en_us' : 'Reminder of Morning prayer',
-     'tr_tu' : 'Sabah Namazının Hatırlatılması',
-     'el_gr' : 'Πρωινή προσευχή'
+     'tr_tu' : 'Sabah namazı ezanı',
+     'el_gr' : 'Κάλεσμα Προσευχής  Fajr'
    }+{
      'en_us' : 'Reminder of Noon prayer',
-     'tr_tu' : 'Öğle namazının Hatırlatılması',
-     'el_gr' : 'Προσευχή το μεσημέρι'
+     'tr_tu' : 'Öğle namazı ezanı',
+     'el_gr' : 'Κάλεσμα Προσευχής Duhr'
    }+{
      'en_us' : 'Reminder of Afternoon prayer',
-     'tr_tu' : 'İkindi Namazının Hatırlatılması',
-     'el_gr' : 'Απογευματινή προσευχή'
+     'tr_tu' : 'İkindi namazı ezanı',
+     'el_gr' : 'Κάλεσμα Προσευχής Asr'
    }+{
      'en_us' : 'Reminder of Sunset prayer',
-     'tr_tu' : 'Gün batımı duasının Hatırlatılması',
-     'el_gr' : 'Προσευχή ηλιοβασιλέματος'
+     'tr_tu' : 'Akşam namazı ezanı',
+     'el_gr' : 'Κάλεσμα Προσευχής Maghrib'
    }+{
      'en_us' : 'Reminder of Night prayer',
-     'tr_tu' : 'Gece namazının Hatırlatılması',
-     'el_gr' : 'Νυχτερινή προσευχή'
+     'tr_tu' : 'Yatsı namazı ezanı',
+     'el_gr' : 'ΝΚάλεσμα Προσευχής Isha'
    }+{
      'en_us' : 'Azan',
-     'tr_tu' : 'ezan',
-     'el_gr' : 'Αζάν'
+     'tr_tu' : 'Ezan',
+     'el_gr' : 'Κάλεσμα'
    }+{
      'en_us' : 'Reminders',
-     'tr_tu' : 'hatırlatıcılar',
-     'el_gr' : 'Υπενθυμίσεις'
+     'tr_tu' : 'Hatırlatma',
+     'el_gr' : 'Υπενθήμηση'
    }+{
      'en_us' : 'Language',
-     'tr_tu' : 'hatırlatıcılar',
-     'el_gr' : 'Υπενθυμίσεις'
+     'tr_tu' : 'Dil',
+     'el_gr' : 'Γλώσσα'
    };
 }
