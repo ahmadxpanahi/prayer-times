@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:prayer_times_flutter/src/feature/barcode_screen/barcode_screen.dart';
 import 'package:prayer_times_flutter/src/feature/calendar_screen/calendar_screen.dart';
 import 'package:prayer_times_flutter/src/feature/food_list_screen/food_list_screen.dart';
@@ -15,7 +16,8 @@ import 'package:i18n_extension/i18n_extension.dart';
 
 class MainScreen extends StatefulWidget {
   String? screenName;
-  MainScreen(this.screenName, {Key? key}) : super(key: key);
+  String? languageValue;
+  MainScreen(this.screenName,this.languageValue, {Key? key}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -32,6 +34,11 @@ class _MainScreenState extends State<MainScreen> {
       ps = await SharedPreferences.getInstance();
     });
     Future.delayed(Duration(milliseconds: 2000), () {
+      switch(widget.languageValue){
+        case 'English' : I18n.of(context).locale = Locale('en', "us"); break;
+        case 'Greek' : I18n.of(context).locale = Locale('el', "gr"); break;
+        case 'Turkish' : I18n.of(context).locale = Locale('tr', "tu"); break;
+      }
     });
   }
 

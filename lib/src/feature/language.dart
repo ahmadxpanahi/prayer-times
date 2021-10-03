@@ -19,96 +19,105 @@ class _LanguageState extends State<Language> {
   SharedPreferences? sp;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     Future.delayed(Duration.zero, () async {
-     sp = await SharedPreferences.getInstance();
+      sp = await SharedPreferences.getInstance();
     });
-    return Scaffold(
-      body: Container(
-        alignment: Alignment.center,
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10.0.rw),
-          height: 50.0.rh,
-          decoration: BoxDecoration(
-              border: Border.all(color: PColors.primary!, width: 2)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                'Language',
-                style: TextStyle(fontSize: 30, color: PColors.primary),
-              ),
-              SizedBox(
-                height: 4.0.rh,
-              ),
-              RadioButton(
-                description: "English",
-                value: "English",
-                activeColor: PColors.primary,
-                groupValue: _singleValue,
-                onChanged: (_)async {
-                  setState(() {
-                    _singleValue = 'English';
-                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
-                    I18n.of(context).locale = Locale('en', "us");
-                  });
-                }
-              ),
-              RadioButton(
-                description: "Greek",
-                value: "Greek",
-                activeColor: PColors.primary,
-                groupValue: _singleValue,
-                onChanged: (_)async {
-                  setState(() {
-                    _singleValue = 'Greek';
-                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
-                    I18n.of(context).locale = Locale('el', "gr");
-                  });
-                }
-              ),
-              RadioButton(
-                description: "Turkish",
-                value: "Turkish",
-                activeColor: PColors.primary,
-                groupValue: _singleValue,
-                onChanged: (_)async {
-                  setState(() {
-                    _singleValue = 'Turkish';
-                    sp?.setString(PreferencesManager.LANGUAGE, _singleValue!);
-                    I18n.of(context).locale = Locale('tr', "tu");
-                  });
-                }
-              ),
-              SizedBox(
-                height: 4.0.rh,
-              ),
-              GestureDetector(
-                onTap: () async {
-                  await sp?.setString(PreferencesManager.LANGUAGE, _singleValue);
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MainScreen('home')));
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 6.0.rh,
-                  width: 30.0.rw,
-                  decoration: BoxDecoration(
-                    color: PColors.primary,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    'Confirm',
-                    style: TextStyle(color: Colors.white, fontSize: 5.0.rw),
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.95,
+      child: Scaffold(
+        body: Container(
+          color: Colors.white54,
+          alignment: Alignment.center,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 10.0.rw),
+            height: 50.0.rh,
+            decoration: BoxDecoration(
+                border: Border.all(color: PColors.primary!, width: 2)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  'Language',
+                  style: TextStyle(fontSize: 30, color: PColors.primary),
+                ),
+                SizedBox(
+                  height: 4.0.rh,
+                ),
+                RadioButton(
+                  description: "English",
+                  value: "English",
+                  activeColor: PColors.primary,
+                  groupValue: _singleValue,
+                  onChanged: (_)async {
+                    setState(() {
+                      _singleValue = 'English';
+                      sp?.setString(PreferencesManager.LANGUAGE, _singleValue);
+                      I18n.of(context).locale = Locale('en', "us");
+                    });
+                  }
+                ),
+                RadioButton(
+                  description: "Greek",
+                  value: "Greek",
+                  activeColor: PColors.primary,
+                  groupValue: _singleValue,
+                  onChanged: (_)async {
+                    setState(() {
+                      _singleValue = 'Greek';
+                      sp?.setString(PreferencesManager.LANGUAGE, _singleValue);
+                      I18n.of(context).locale = Locale('el', "gr");
+                    });
+                  }
+                ),
+                RadioButton(
+                  description: "Turkish",
+                  value: "Turkish",
+                  activeColor: PColors.primary,
+                  groupValue: _singleValue,
+                  onChanged: (_)async {
+                    setState(() {
+                      _singleValue = 'Turkish';
+                      sp?.setString(PreferencesManager.LANGUAGE, _singleValue);
+                      I18n.of(context).locale = Locale('tr', "tu");
+                    });
+                  }
+                ),
+                SizedBox(
+                  height: 4.0.rh,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    await sp?.setString(PreferencesManager.LANGUAGE, _singleValue);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainScreen('home',_singleValue)));
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 6.0.rh,
+                    width: 30.0.rw,
+                    decoration: BoxDecoration(
+                      color: PColors.primary,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      'Confirm',
+                      style: TextStyle(color: Colors.white, fontSize: 5.0.rw),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 0.5.rh,
-              ),
-            ],
+                SizedBox(
+                  height: 0.5.rh,
+                ),
+              ],
+            ),
           ),
         ),
       ),

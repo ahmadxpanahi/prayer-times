@@ -95,7 +95,28 @@ class _FoodListContainerState extends State<FoodListContainer> {
           foodList = state.foods;
           return _buildBody();
         } else if(state is BarcodeErrorState){
-          return Center(child: Text(state.error??''),);
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(state.error??''),
+                SizedBox(height: 10,),
+                GestureDetector(
+                  onTap: (){_barcodeBloc.add(GetBarcodeData());},
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 15.0.rw,
+                    height: 4.0.rh,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3),
+                      color: PColors.primary,
+                    ),
+                    child: Text('Retry...',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                  ),
+                )
+              ],
+            ),
+          );
         } else{
           return SizedBox();
         }

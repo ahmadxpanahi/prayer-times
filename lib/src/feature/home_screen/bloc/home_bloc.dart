@@ -70,7 +70,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } on FormatException catch (e) {
       yield HomeGetDataError("Prayer times server is down! please try again later");
     } on Exception catch(e){
-      yield HomeGetDataError(e.toString());
+      yield HomeGetDataError("Please check your network connection");
     }
   }
 
