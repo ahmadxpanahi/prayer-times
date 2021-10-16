@@ -154,27 +154,33 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   void _scheduleNotification(
       int id, String title, String message, ActionType actionType,
       {bool isAlarm = false}) async {
+    String _alarmFile = 'sabah';
     String time = "00:00";
     switch (id) {
       case NotificationService.MORNING_NOTIFICATION_ID:
       case NotificationService.MORNING_ALARM_ID:
+        _alarmFile = 'sabah';
         time = sp?.getString(PreferencesManager.MORNING_PRAYER_TIME) ?? '00:00';
         break;
       case NotificationService.NOON_NOTIFICATION_ID:
       case NotificationService.NOON_ALARM_ID:
+        _alarmFile = 'ogle';
         time = sp?.getString(PreferencesManager.NOON_PRAYER_TIME) ?? '00:00';
         break;
       case NotificationService.AFTERNOON_NOTIFICATION_ID:
       case NotificationService.AFTERNOON_ALARM_ID:
+        _alarmFile = 'ikindi';
         time =
             sp?.getString(PreferencesManager.AFTERNOON_PRAYER_TIME) ?? '00:00';
         break;
       case NotificationService.SUNSET_NOTIFICATION_ID:
       case NotificationService.SUNSET_ALARM_ID:
+        _alarmFile = 'aksam';
         time = sp?.getString(PreferencesManager.SUNSET_PRAYER_TIME) ?? '00:00';
         break;
       case NotificationService.NIGHT_NOTIFICATION_ID:
       case NotificationService.NIGHT_ALARM_ID:
+        _alarmFile = 'yatsi';
         time = sp?.getString(PreferencesManager.NIGHT_PRAYER_TIME) ?? '00:00';
         break;
     }
@@ -194,7 +200,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
                   'muftuluk_daily_azan_alarm',
                   'Muftuluk daily azan alarm',
                   'Daily alarm for prayer times',
-                  sound: RawResourceAndroidNotificationSound('muftuluk_alarm'),
+                  sound: RawResourceAndroidNotificationSound(_alarmFile),
                   playSound: true,
                   priority: Priority.high,
                 ),
